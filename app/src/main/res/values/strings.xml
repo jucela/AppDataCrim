@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">DataCrim</string>
+    <string name="action_settings">Settings</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="check1">Mapa de Calor</string>
+    <string name="check2">Todos</string>
+    <string name="check3">Robo agravado</string>
+    <string name="check4">Robo agravado a mano armada</string>
+    <string name="check5">Robo</string>
+    <string name="check6">Hurto</string>
+    <string name="check7">Hurto agravado</string>
+    <string name="check8">Hurto de vehiculo</string>
+    <string name="check9">Asalto y robo de vehiculos</string>
+    <string name="check10">Homicidio calificado - Asesinato</string>
+    <string name="check11">Homicidio por arma de fuego</string>
+    <string name="check12">Hurto agravado en casa habitada</string>
+    <string name="check13">Robo frustrado</string>
+    <string name="check14">Robo agravado durante la noche o en lugar desolado</string>
+    <string name="check15">Microcomercializacion de drogas</string>
+    <string name="check16">Hurto frustrado</string>
+    <string name="check17">Estafa y otras defraudaciones</string>
+</resources>
