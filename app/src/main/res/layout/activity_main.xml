@@ -12,7 +12,14 @@
         android:id="@+id/contedor_fragments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#c2c200"/>
+        android:background="#c2c200">
+        <com.esri.arcgisruntime.mapping.view.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </com.esri.arcgisruntime.mapping.view.MapView>
+
+    </FrameLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_drawer"
         app:headerLayout="@layout/nav_header_main"

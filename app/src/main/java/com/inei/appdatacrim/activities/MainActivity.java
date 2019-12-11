@@ -6,9 +6,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -19,6 +23,12 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
+import com.esri.arcgisruntime.data.ServiceFeatureTable;
+import com.esri.arcgisruntime.layers.FeatureLayer;
+import com.esri.arcgisruntime.mapping.ArcGISMap;
+import com.esri.arcgisruntime.mapping.Basemap;
+import com.esri.arcgisruntime.mapping.view.MapView;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.material.navigation.NavigationView;
 import com.inei.appdatacrim.R;
 import com.inei.appdatacrim.adapters.ExpandListAdapter;
@@ -36,12 +46,19 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private Button boton;
 
+    private MapView mapView;
+    private ArcGISMap map;
+
 
     private ArrayList<String> listDataHeader;
     private ExpandableListView expListView;
     private HashMap<String, List<String>> listDataChild;
     private ExpandListAdapter listAdapter;
     private MenuItem menuItems;
+    CheckBox checkBox1_1;
+
+
+    private ArrayList<Boolean> estados = new ArrayList<>();
 
 
 
@@ -49,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mapView = findViewById(R.id.mapView);
         drawerLayout =(DrawerLayout)findViewById(R.id.drawer);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -58,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(navigationView);
 
+        checkBox1_1 = (CheckBox) findViewById(R.id.id_check1);
+
         /*Lista Expandible en DRAWER*/
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
@@ -65,6 +85,19 @@ public class MainActivity extends AppCompatActivity {
         listAdapter = new ExpandListAdapter(this,obtenerListDataHeader(),obtenerListDataChild(),expListView);
         expListView.setAdapter(listAdapter);
         enableExpandableList();
+
+        /*METODO DE ARCGIS*/
+        Basemap.Type basemapType = Basemap.Type.NAVIGATION_VECTOR;
+        double latitude = -12.060457;
+        double longitude = -77.041531;
+        int levelOfDetail = 16;
+
+
+        map = new ArcGISMap(basemapType, latitude, longitude, levelOfDetail);
+        mapView.setMap(map);
+        /**/
+        //addLayer1_1(map);
+        estados.add(0,false);
 
 
     }
@@ -175,30 +208,7 @@ public class MainActivity extends AppCompatActivity {
                                 Log.i("posicion","1-1");
                                 break;
                             case 2:
-                                AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this,R.style.ThemeOverlay_MaterialComponents_Dialog);
-                                final View dialogView = MainActivity.this.getLayoutInflater().inflate(R.layout.layout_denuncias_2016, null);
-
-                                alert.setTitle("Denuncias Delitos 2016");
-                                alert.setView(dialogView);
-                                alert.setPositiveButton("Aceptar",null);
-                                alert.setNegativeButton("Cancelar",null);
-
-                                final AlertDialog alertDialog = alert.create();
-
-                                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                                    @Override
-                                    public void onShow(DialogInterface dialogInterface) {
-                                        Button b = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                                        b.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                alertDialog.dismiss();
-                                            }
-                                        });
-                                    }
-                                });
-                                alertDialog.show();
-                                Log.i("posicion","1-2");
+                                formDelitos2016();
                                 break;
                             case 3:
                                 Log.i("posicion","1-3");
@@ -287,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    /*SETEAR DATOS EN MENU LATERAL O DRAWER*/
     //Llenar Cabezera de Lista
     public ArrayList<String> obtenerListDataHeader() {
        ArrayList<String> header = new ArrayList<>();
@@ -332,5 +342,111 @@ public class MainActivity extends AppCompatActivity {
         return child;
     }
 
+    /*SETEAR Y OBTENER VALORES DE CAMPO*/
+
+    public  void formDelitos2016(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this,R.style.ThemeOverlay_MaterialComponents_Dialog);
+        final View dialogView = MainActivity.this.getLayoutInflater().inflate(R.layout.layout_denuncias, null);
+        ServiceFeatureTable table = new ServiceFeatureTable("http://arcgis1.inei.gob.pe:6080/arcgis/rest/services/CRIMINALIDAD/DATACRIM005_AGS_PUNTOSDELITOS_CIUDADANO/MapServer/50");
+        FeatureLayer layerFromTable = new FeatureLayer(table);
+        final CheckBox check1 = (CheckBox) dialogView.findViewById(R.id.id_check1);
+        final CheckBox check2 = (CheckBox) dialogView.findViewById(R.id.id_check2);
+        final CheckBox check3 = (CheckBox) dialogView.findViewById(R.id.id_check3);
+        final CheckBox check4 = (CheckBox) dialogView.findViewById(R.id.id_check4);
+        final CheckBox check5 = (CheckBox) dialogView.findViewById(R.id.id_check5);
+        final CheckBox check6 = (CheckBox) dialogView.findViewById(R.id.id_check6);
+        final CheckBox check7 = (CheckBox) dialogView.findViewById(R.id.id_check7);
+        final CheckBox check8 = (CheckBox) dialogView.findViewById(R.id.id_check8);
+        final CheckBox check9 = (CheckBox) dialogView.findViewById(R.id.id_check9);
+        final CheckBox check10 = (CheckBox) dialogView.findViewById(R.id.id_check10);
+        final CheckBox check11 = (CheckBox) dialogView.findViewById(R.id.id_check11);
+        final CheckBox check12 = (CheckBox) dialogView.findViewById(R.id.id_check12);
+        final CheckBox check13 = (CheckBox) dialogView.findViewById(R.id.id_check13);
+        final CheckBox check14 = (CheckBox) dialogView.findViewById(R.id.id_check14);
+        final CheckBox check15 = (CheckBox) dialogView.findViewById(R.id.id_check15);
+        final CheckBox check16 = (CheckBox) dialogView.findViewById(R.id.id_check16);
+        final CheckBox check17 = (CheckBox) dialogView.findViewById(R.id.id_check17);
+        check1.setChecked(estados.get(0));
+
+
+        alert.setTitle("Denuncias Delitos");
+        alert.setIcon(R.drawable.ic_place);
+        alert.setView(dialogView);
+        alert.setPositiveButton("OK",null);
+        alert.setNegativeButton("Cancelar",null);
+
+        final AlertDialog alertDialog = alert.create();
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        boolean estado1 = check1.isChecked();
+                        boolean estado2 = check2.isChecked();
+                        boolean estado3 = check3.isChecked();
+                        boolean estado4 = check4.isChecked();
+                        boolean estado5 = check5.isChecked();
+                        boolean estado6 = check6.isChecked();
+                        boolean estado7 = check7.isChecked();
+                        boolean estado8 = check8.isChecked();
+                        boolean estado9 = check9.isChecked();
+                        boolean estado10 = check10.isChecked();
+                        boolean estado11 = check11.isChecked();
+                        boolean estado12 = check12.isChecked();
+                        boolean estado13 = check13.isChecked();
+                        boolean estado14 = check14.isChecked();
+                        boolean estado15 = check15.isChecked();
+                        boolean estado16 = check16.isChecked();
+                        boolean estado17 = check17.isChecked();
+                        estados.add(estado1);
+                        estados.add(estado2);
+                        estados.add(estado3);
+                        estados.add(estado4);
+                        estados.add(estado5);
+                        estados.add(estado6);
+                        estados.add(estado7);
+                        estados.add(estado8);
+                        estados.add(estado9);
+                        estados.add(estado10);
+                        estados.add(estado11);
+                        estados.add(estado12);
+                        estados.add(estado13);
+                        estados.add(estado14);
+                        estados.add(estado15);
+                        estados.add(estado16);
+                        estados.add(estado17);
+                        addCapa(map,estado1);
+//                        if(estados.get(0)==true){
+//                        map.getOperationalLayers().add(layerFromTable);
+//                       }if(estados.get(0)==false){
+//                        map.getOperationalLayers().remove(layerFromTable);
+//                       }
+                        Toast.makeText(MainActivity.this,"check1"+estado1,Toast.LENGTH_SHORT).show();
+                        alertDialog.dismiss();
+
+                    }
+                });
+            }
+        });
+        alertDialog.show();
+    }
+
+    /*SETEAR CAPAS*/
+    private void addCapa(final ArcGISMap map,boolean estado) {
+        ServiceFeatureTable table = new ServiceFeatureTable("http://arcgis1.inei.gob.pe:6080/arcgis/rest/services/CRIMINALIDAD/DATACRIM005_AGS_PUNTOSDELITOS_CIUDADANO/MapServer/50");
+        FeatureLayer layerFromTable = new FeatureLayer(table);
+        if(estado==true){
+            map.getOperationalLayers().add(layerFromTable);
+            Toast.makeText(MainActivity.this,"addCapa1"+estado,Toast.LENGTH_SHORT).show();
+        }
+        else
+         {
+             Toast.makeText(MainActivity.this,"addCapa2"+estado,Toast.LENGTH_SHORT).show();
+             map.getOperationalLayers().remove(layerFromTable);
+         }
+    }
 
 }

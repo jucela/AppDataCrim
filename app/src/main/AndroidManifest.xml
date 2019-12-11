@@ -4,6 +4,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -22,9 +24,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA665SUB47xKavD1sJPwDcsnYFeKqFqvA0"/>
     </application>
-    <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true"
-        />
-
+<!--    <uses-feature-->
+<!--        android:glEsVersion="0x00020000"-->
+<!--        android:required="true"-->
+<!--        />-->
 </manifest>
