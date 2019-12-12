@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/id_check1"
+                android:id="@+id/id_check1x"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/check1"/>

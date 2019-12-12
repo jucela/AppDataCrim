@@ -1,5 +1,6 @@
 package com.inei.appdatacrim.activities;
 
+import android.animation.ArgbEvaluator;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,8 +34,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.material.navigation.NavigationView;
 import com.inei.appdatacrim.R;
 import com.inei.appdatacrim.adapters.ExpandListAdapter;
+import com.inei.appdatacrim.dialogs.DialogDelitos;
 import com.inei.appdatacrim.fragments.FragmentMapa;
 import com.inei.appdatacrim.fragments.FragmentMapa2;
+import com.inei.appdatacrim.modelo.SQLConstantes;
 
 
 import java.io.IOException;
@@ -41,13 +45,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DialogDelitos.SendDialogListener {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private Button boton;
 
     private MapView mapView;
-    private ArcGISMap map;
+    //private ArcGISMap map;
+    private TextView texto;
 
 
     private ArrayList<String> listDataHeader;
@@ -55,10 +60,15 @@ public class MainActivity extends AppCompatActivity {
     private HashMap<String, List<String>> listDataChild;
     private ExpandListAdapter listAdapter;
     private MenuItem menuItems;
-    CheckBox checkBox1_1;
+    private CheckBox checkBox1;
+
+
+    private ArcGISMap map ;
+    private FeatureLayer layerFromTable;
 
 
     private ArrayList<Boolean> estados = new ArrayList<>();
+
 
 
 
@@ -67,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mapView = findViewById(R.id.mapView);
+        texto = findViewById(R.id.idtexto);
+        //checkBox1 = findViewById(R.id.id_check1);
         drawerLayout =(DrawerLayout)findViewById(R.id.drawer);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -76,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(navigationView);
 
-        checkBox1_1 = (CheckBox) findViewById(R.id.id_check1);
+
 
         /*Lista Expandible en DRAWER*/
         listDataHeader = new ArrayList<String>();
@@ -87,17 +99,23 @@ public class MainActivity extends AppCompatActivity {
         enableExpandableList();
 
         /*METODO DE ARCGIS*/
-        Basemap.Type basemapType = Basemap.Type.NAVIGATION_VECTOR;
-        double latitude = -12.060457;
+        //setupMap();
+        setCheckEstados();
+
+        Basemap.Type basemapType = Basemap.Type.STREETS_VECTOR;
+        double latitude  = -12.060457;
         double longitude = -77.041531;
         int levelOfDetail = 16;
-
-
         map = new ArcGISMap(basemapType, latitude, longitude, levelOfDetail);
         mapView.setMap(map);
-        /**/
-        //addLayer1_1(map);
-        estados.add(0,false);
+        ServiceFeatureTable table = new ServiceFeatureTable(SQLConstantes.servicio1);
+        layerFromTable = new FeatureLayer(table);
+
+
+        //addCapa2(map);
+        //texto.setText(""+estados.get(0));
+
+        //formDelitos2016(map);
 
 
     }
@@ -132,7 +150,45 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*METODOS DE ANULACION*/
+    @Override
+    protected void onPause() {
+        if (mapView != null) {
+            mapView.pause();
+        }
+        super.onPause();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mapView != null) {
+            mapView.resume();
+        }
+    }
+
+    @Override
+
+    protected void onDestroy() {
+        if (mapView != null) {
+            mapView.dispose();
+        }
+        super.onDestroy();
+    }
+
+    /*METODO DE CARGADO DE MAPA*/
+    private void setupMap() {
+        if (mapView != null) {
+            Basemap.Type basemapType = Basemap.Type.STREETS_VECTOR;
+            double latitude  = -12.060457;
+            double longitude = -77.041531;
+            int levelOfDetail = 16;
+            ArcGISMap map = new ArcGISMap(basemapType, latitude, longitude, levelOfDetail);
+            mapView.setMap(map);
+        }
+    }
+
+    /*METODO DE INTERACCION CON EL ADAPTADOR*/
     private void enableExpandableList() {
 
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -211,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
                                 formDelitos2016();
                                 break;
                             case 3:
-                                Log.i("posicion","1-3");
+                                openDialog();
                                 break;
                             case 4:
                                 Log.i("posicion","1-4");
@@ -347,8 +403,6 @@ public class MainActivity extends AppCompatActivity {
     public  void formDelitos2016(){
         AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this,R.style.ThemeOverlay_MaterialComponents_Dialog);
         final View dialogView = MainActivity.this.getLayoutInflater().inflate(R.layout.layout_denuncias, null);
-        ServiceFeatureTable table = new ServiceFeatureTable("http://arcgis1.inei.gob.pe:6080/arcgis/rest/services/CRIMINALIDAD/DATACRIM005_AGS_PUNTOSDELITOS_CIUDADANO/MapServer/50");
-        FeatureLayer layerFromTable = new FeatureLayer(table);
         final CheckBox check1 = (CheckBox) dialogView.findViewById(R.id.id_check1);
         final CheckBox check2 = (CheckBox) dialogView.findViewById(R.id.id_check2);
         final CheckBox check3 = (CheckBox) dialogView.findViewById(R.id.id_check3);
@@ -367,8 +421,22 @@ public class MainActivity extends AppCompatActivity {
         final CheckBox check16 = (CheckBox) dialogView.findViewById(R.id.id_check16);
         final CheckBox check17 = (CheckBox) dialogView.findViewById(R.id.id_check17);
         check1.setChecked(estados.get(0));
-
-
+        check2.setChecked(estados.get(1));
+        check3.setChecked(estados.get(2));
+        check4.setChecked(estados.get(3));
+        check5.setChecked(estados.get(4));
+        check6.setChecked(estados.get(5));
+        check7.setChecked(estados.get(6));
+        check8.setChecked(estados.get(7));
+        check9.setChecked(estados.get(8));
+        check10.setChecked(estados.get(9));
+        check11.setChecked(estados.get(10));
+        check12.setChecked(estados.get(11));
+        check13.setChecked(estados.get(12));
+        check14.setChecked(estados.get(13));
+        check15.setChecked(estados.get(14));
+        check16.setChecked(estados.get(15));
+        check17.setChecked(estados.get(16));
         alert.setTitle("Denuncias Delitos");
         alert.setIcon(R.drawable.ic_place);
         alert.setView(dialogView);
@@ -401,29 +469,25 @@ public class MainActivity extends AppCompatActivity {
                         boolean estado15 = check15.isChecked();
                         boolean estado16 = check16.isChecked();
                         boolean estado17 = check17.isChecked();
-                        estados.add(estado1);
-                        estados.add(estado2);
-                        estados.add(estado3);
-                        estados.add(estado4);
-                        estados.add(estado5);
-                        estados.add(estado6);
-                        estados.add(estado7);
-                        estados.add(estado8);
-                        estados.add(estado9);
-                        estados.add(estado10);
-                        estados.add(estado11);
-                        estados.add(estado12);
-                        estados.add(estado13);
-                        estados.add(estado14);
-                        estados.add(estado15);
-                        estados.add(estado16);
-                        estados.add(estado17);
-                        addCapa(map,estado1);
-//                        if(estados.get(0)==true){
-//                        map.getOperationalLayers().add(layerFromTable);
-//                       }if(estados.get(0)==false){
-//                        map.getOperationalLayers().remove(layerFromTable);
-//                       }
+                        estados.add(0,estado1);
+                        estados.add(1,estado2);
+                        estados.add(2,estado3);
+                        estados.add(3,estado4);
+                        estados.add(4,estado5);
+                        estados.add(5,estado6);
+                        estados.add(6,estado7);
+                        estados.add(7,estado8);
+                        estados.add(8,estado9);
+                        estados.add(9,estado10);
+                        estados.add(10,estado11);
+                        estados.add(11,estado12);
+                        estados.add(12,estado13);
+                        estados.add(13,estado14);
+                        estados.add(14,estado15);
+                        estados.add(15,estado16);
+                        estados.add(16,estado17);
+                        //addCapa1(map,estado1);
+                        addCapax(estado1);
                         Toast.makeText(MainActivity.this,"check1"+estado1,Toast.LENGTH_SHORT).show();
                         alertDialog.dismiss();
 
@@ -435,18 +499,127 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*SETEAR CAPAS*/
-    private void addCapa(final ArcGISMap map,boolean estado) {
-        ServiceFeatureTable table = new ServiceFeatureTable("http://arcgis1.inei.gob.pe:6080/arcgis/rest/services/CRIMINALIDAD/DATACRIM005_AGS_PUNTOSDELITOS_CIUDADANO/MapServer/50");
+    private void addCapa1(final ArcGISMap map1,boolean estado) {
+        ServiceFeatureTable table = new ServiceFeatureTable(SQLConstantes.servicio1);
         FeatureLayer layerFromTable = new FeatureLayer(table);
+        //ArcGISMap map1 = mapView.getMap();
+        if(estado==true){
+            map1.getOperationalLayers().add(layerFromTable);
+            Toast.makeText(MainActivity.this,"addCapa1"+estado,Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            map1.getOperationalLayers().remove(layerFromTable);
+            Toast.makeText(MainActivity.this,"addCapa1"+estado,Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void addCapa2(final ArcGISMap mapa) {
+        checkBox1 = findViewById(R.id.id_check1);
+        ServiceFeatureTable table = new ServiceFeatureTable(SQLConstantes.servicio1);
+        FeatureLayer layerFromTable = new FeatureLayer(table);
+
+        checkBox1.setOnClickListener(view -> {
+            if (checkBox1.isChecked() == true) {
+                Log.i("Mensaje","Entro a CheckBox:true");
+                mapa.getOperationalLayers().add(layerFromTable);
+
+            }
+            if (checkBox1.isChecked() == false) {
+                Log.i("Mensaje","Entro a CheckBox:false");
+                mapa.getOperationalLayers().remove(layerFromTable);
+
+            }
+        });
+    }
+
+    private void addCapa3(final ArcGISMap map1,boolean estado) {
+        ServiceFeatureTable table = new ServiceFeatureTable(SQLConstantes.servicio1);
+        FeatureLayer layerFromTable = new FeatureLayer(table);
+        //ArcGISMap map1 = mapView.getMap();
+        if(estado==true){
+            //texto.setText("t:"+estados.get(0));
+            map1.getOperationalLayers().add(layerFromTable);
+            Toast.makeText(MainActivity.this,"addCapa1"+estado,Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            //texto.setText("f:"+estados.get(0));
+            map1.getOperationalLayers().remove(layerFromTable);
+            Toast.makeText(MainActivity.this,"addCapa1"+estado,Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void addCapax(boolean estado) {
+
         if(estado==true){
             map.getOperationalLayers().add(layerFromTable);
             Toast.makeText(MainActivity.this,"addCapa1"+estado,Toast.LENGTH_SHORT).show();
         }
         else
-         {
-             Toast.makeText(MainActivity.this,"addCapa2"+estado,Toast.LENGTH_SHORT).show();
-             map.getOperationalLayers().remove(layerFromTable);
-         }
+        {
+            map.getOperationalLayers().remove(layerFromTable);
+            Toast.makeText(MainActivity.this,"addCapa1"+estado,Toast.LENGTH_SHORT).show();
+        }
     }
 
+
+//    private void addLayer2_1(final ArcGISMap map) {
+//
+//        ServiceFeatureTable table =
+//                new ServiceFeatureTable("http://arcgis.inei.gob.pe:6080/arcgis/rest/services/CRIMINALIDAD/PUNTOS_CRI_MODULO_CIUDADANO/MapServer/21");
+//        FeatureLayer layerFromTable = new FeatureLayer(table);
+//
+//
+//
+//        findViewById(R.id.chek2_1).setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                if(checkBox2_1.isChecked()==true){
+//                    map.getOperationalLayers().add(layerFromTable);                                // borrador = 6
+//
+//                }if(checkBox2_1.isChecked()==false){
+//                    map.getOperationalLayers().remove(layerFromTable);
+//
+//                }
+//            }
+//        });
+//
+//
+//    }
+
+    private void setCheckEstados(){
+        if(estados.size()==0){
+            estados.add(0,false);
+            estados.add(1,false);
+            estados.add(2,false);
+            estados.add(3,false);
+            estados.add(4,false);
+            estados.add(5,false);
+            estados.add(6,false);
+            estados.add(7,false);
+            estados.add(8,false);
+            estados.add(9,false);
+            estados.add(10,false);
+            estados.add(11,false);
+            estados.add(12,false);
+            estados.add(13,false);
+            estados.add(14,false);
+            estados.add(15,false);
+            estados.add(16,false);
+        }
+    }
+
+    @Override
+    public void applyTexts(ArrayList<Boolean> estadosx) {
+        estados.add(0,estadosx.get(0));
+        texto.setText(""+estados.get(0));
+        addCapax(estados.get(0));
+    }
+
+    public void openDialog() {
+        DialogDelitos dialogo = new DialogDelitos();
+        dialogo.show(getSupportFragmentManager(), "Dialog Delitos");
+    }
 }
