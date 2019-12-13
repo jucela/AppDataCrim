@@ -14,6 +14,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/id_check0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/check0"/>
+            <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/id_check1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -22,7 +27,7 @@
                 android:id="@+id/id_check2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/check14"/>
+                android:text="@string/check2"/>
             <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/id_check3"
                 android:layout_width="wrap_content"
@@ -93,11 +98,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/check16"/>
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/id_check17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/check17"/>
         </LinearLayout>
         </ScrollView>
 

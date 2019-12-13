@@ -21,21 +21,63 @@ import com.inei.appdatacrim.R;
 import java.util.ArrayList;
 
 public class DialogDelitos extends AppCompatDialogFragment {
-
-    private CheckBox check1,check2,check3,check4,check5,check6,check7,check8,check9,check10,check11,check12,check13,check14,check15,check16,check17;
+    public static final String TAG = DialogDelitos.class.getSimpleName();
+    private static final String ANIO = "ANIO";
+    private static final String ESTADO1 = "ESTADO1";
+    private static final String ESTADO2 = "ESTADO2";
+    private static final String ESTADO3 = "ESTADO3";
+    private static final String ESTADO4 = "ESTADO4";
+    private static final String ESTADO5 = "ESTADO5";
+    private static final String ESTADO6 = "ESTADO6";
+    private static final String ESTADO7 = "ESTADO7";
+    private static final String ESTADO8 = "ESTADO8";
+    private static final String ESTADO9 = "ESTADO9";
+    private static final String ESTADO10 = "ESTADO10";
+    private static final String ESTADO11 = "ESTADO11";
+    private static final String ESTADO12 = "ESTADO12";
+    private static final String ESTADO13 = "ESTADO13";
+    private static final String ESTADO14 = "ESTADO14";
+    private static final String ESTADO15 = "ESTADO15";
+    private static final String ESTADO16 = "ESTADO16";
+    private CheckBox check0,check1,check2,check3,check4,check5,check6,check7,check8,check9,check10,check11,check12,check13,check14,check15,check16;
     private SendDialogListener listener;
     int numero;
+
+
+    public static DialogDelitos newInstance(String anio,ArrayList<Boolean> StateCheckCrime) {
+        Bundle args = new Bundle();
+        args.putString(ANIO,anio);
+        args.putBoolean(ESTADO1,StateCheckCrime.get(1));
+        args.putBoolean(ESTADO2,StateCheckCrime.get(2));
+        args.putBoolean(ESTADO3,StateCheckCrime.get(3));
+        args.putBoolean(ESTADO4,StateCheckCrime.get(4));
+        args.putBoolean(ESTADO5,StateCheckCrime.get(5));
+        args.putBoolean(ESTADO6,StateCheckCrime.get(6));
+        args.putBoolean(ESTADO7,StateCheckCrime.get(7));
+        args.putBoolean(ESTADO8,StateCheckCrime.get(8));
+        args.putBoolean(ESTADO9,StateCheckCrime.get(9));
+        args.putBoolean(ESTADO10,StateCheckCrime.get(10));
+        args.putBoolean(ESTADO11,StateCheckCrime.get(11));
+        args.putBoolean(ESTADO12,StateCheckCrime.get(12));
+        args.putBoolean(ESTADO13,StateCheckCrime.get(13));
+        args.putBoolean(ESTADO14,StateCheckCrime.get(14));
+        args.putBoolean(ESTADO15,StateCheckCrime.get(15));
+        args.putBoolean(ESTADO16,StateCheckCrime.get(16));
+
+        DialogDelitos frag = new DialogDelitos();
+        frag.setArguments(args);
+
+        return frag;
+    }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //numero = getArguments().getInt("num");
-        numero=1;
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.ThemeOverlay_MaterialComponents_Dialog);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.layout_denuncias, null);
+        check0 = view.findViewById(R.id.id_check0);
         check1 = view.findViewById(R.id.id_check1);
         check2 = view.findViewById(R.id.id_check2);
         check3 = view.findViewById(R.id.id_check3);
@@ -52,10 +94,27 @@ public class DialogDelitos extends AppCompatDialogFragment {
         check14 = view.findViewById(R.id.id_check14);
         check15 = view.findViewById(R.id.id_check15);
         check16 = view.findViewById(R.id.id_check16);
-        check17 = view.findViewById(R.id.id_check17);
+        check1.setChecked(getArguments().getBoolean(ESTADO1));
+        check2.setChecked(getArguments().getBoolean(ESTADO2));
+        check3.setChecked(getArguments().getBoolean(ESTADO3));
+        check4.setChecked(getArguments().getBoolean(ESTADO4));
+        check5.setChecked(getArguments().getBoolean(ESTADO5));
+        check6.setChecked(getArguments().getBoolean(ESTADO6));
+        check7.setChecked(getArguments().getBoolean(ESTADO7));
+        check8.setChecked(getArguments().getBoolean(ESTADO8));
+        check9.setChecked(getArguments().getBoolean(ESTADO9));
+        check10.setChecked(getArguments().getBoolean(ESTADO10));
+        check11.setChecked(getArguments().getBoolean(ESTADO11));
+        check12.setChecked(getArguments().getBoolean(ESTADO12));
+        check13.setChecked(getArguments().getBoolean(ESTADO13));
+        check14.setChecked(getArguments().getBoolean(ESTADO14));
+        check15.setChecked(getArguments().getBoolean(ESTADO15));
+        check16.setChecked(getArguments().getBoolean(ESTADO16));
+
 
         builder.setView(view)
-                .setTitle(""+numero)
+                .setTitle("Denuncias Delitos "+getArguments().getString(ANIO))
+                .setIcon(R.drawable.ic_place)
                 .setNegativeButton("Salir", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -65,6 +124,7 @@ public class DialogDelitos extends AppCompatDialogFragment {
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        boolean estado0 = check0.isChecked();
                         boolean estado1 = check1.isChecked();
                         boolean estado2 = check2.isChecked();
                         boolean estado3 = check3.isChecked();
@@ -81,8 +141,8 @@ public class DialogDelitos extends AppCompatDialogFragment {
                         boolean estado14 = check14.isChecked();
                         boolean estado15 = check15.isChecked();
                         boolean estado16 = check16.isChecked();
-                        boolean estado17 = check17.isChecked();
                         ArrayList<Boolean> estados = new ArrayList<>();
+                        estados.add(estado0);
                         estados.add(estado1);
                         estados.add(estado2);
                         estados.add(estado3);
@@ -99,14 +159,13 @@ public class DialogDelitos extends AppCompatDialogFragment {
                         estados.add(estado14);
                         estados.add(estado15);
                         estados.add(estado16);
-                        estados.add(estado17);
-                        listener.applyTexts(estados);
+                        listener.applyTexts(estados,getArguments().getString(ANIO));
                     }
                 });
 
 
         return builder.create();
-        //return super.onCreateDialog(savedInstanceState);
+
     }
 
     @Override
@@ -127,7 +186,7 @@ public class DialogDelitos extends AppCompatDialogFragment {
     }
 
     public interface SendDialogListener {
-        void applyTexts(ArrayList<Boolean> estados);
+        void applyTexts(ArrayList<Boolean> estados,String anio);
     }
 
 

@@ -64,10 +64,84 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
 
 
     private ArcGISMap map ;
-    private FeatureLayer layerFromTable;
+    private FeatureLayer layerFromTable16_0;
+    private FeatureLayer layerFromTable16_1;
+    private FeatureLayer layerFromTable16_2;
+    private FeatureLayer layerFromTable16_3;
+    private FeatureLayer layerFromTable16_4;
+    private FeatureLayer layerFromTable16_5;
+    private FeatureLayer layerFromTable16_6;
+    private FeatureLayer layerFromTable16_7;
+    private FeatureLayer layerFromTable16_8;
+    private FeatureLayer layerFromTable16_9;
+    private FeatureLayer layerFromTable16_10;
+    private FeatureLayer layerFromTable16_11;
+    private FeatureLayer layerFromTable16_12;
+    private FeatureLayer layerFromTable16_13;
+    private FeatureLayer layerFromTable16_14;
+    private FeatureLayer layerFromTable16_15;
+    private FeatureLayer layerFromTable16_16;
+
+    private FeatureLayer layerFromTable17_0;
+    private FeatureLayer layerFromTable17_1;
+    private FeatureLayer layerFromTable17_2;
+    private FeatureLayer layerFromTable17_3;
+    private FeatureLayer layerFromTable17_4;
+    private FeatureLayer layerFromTable17_5;
+    private FeatureLayer layerFromTable17_6;
+    private FeatureLayer layerFromTable17_7;
+    private FeatureLayer layerFromTable17_8;
+    private FeatureLayer layerFromTable17_9;
+    private FeatureLayer layerFromTable17_10;
+    private FeatureLayer layerFromTable17_11;
+    private FeatureLayer layerFromTable17_12;
+    private FeatureLayer layerFromTable17_13;
+    private FeatureLayer layerFromTable17_14;
+    private FeatureLayer layerFromTable17_15;
+    private FeatureLayer layerFromTable17_16;
+
+    private FeatureLayer layerFromTable18_0;
+    private FeatureLayer layerFromTable18_1;
+    private FeatureLayer layerFromTable18_2;
+    private FeatureLayer layerFromTable18_3;
+    private FeatureLayer layerFromTable18_4;
+    private FeatureLayer layerFromTable18_5;
+    private FeatureLayer layerFromTable18_6;
+    private FeatureLayer layerFromTable18_7;
+    private FeatureLayer layerFromTable18_8;
+    private FeatureLayer layerFromTable18_9;
+    private FeatureLayer layerFromTable18_10;
+    private FeatureLayer layerFromTable18_11;
+    private FeatureLayer layerFromTable18_12;
+    private FeatureLayer layerFromTable18_13;
+    private FeatureLayer layerFromTable18_14;
+    private FeatureLayer layerFromTable18_15;
+    private FeatureLayer layerFromTable18_16;
+
+    private FeatureLayer layerFromTable19_0;
+    private FeatureLayer layerFromTable19_1;
+    private FeatureLayer layerFromTable19_2;
+    private FeatureLayer layerFromTable19_3;
+    private FeatureLayer layerFromTable19_4;
+    private FeatureLayer layerFromTable19_5;
+    private FeatureLayer layerFromTable19_6;
+    private FeatureLayer layerFromTable19_7;
+    private FeatureLayer layerFromTable19_8;
+    private FeatureLayer layerFromTable19_9;
+    private FeatureLayer layerFromTable19_10;
+    private FeatureLayer layerFromTable19_11;
+    private FeatureLayer layerFromTable19_12;
+    private FeatureLayer layerFromTable19_13;
+    private FeatureLayer layerFromTable19_14;
+    private FeatureLayer layerFromTable19_15;
+    private FeatureLayer layerFromTable19_16;
 
 
-    private ArrayList<Boolean> estados = new ArrayList<>();
+
+    private ArrayList<Boolean> estados16 = new ArrayList<>();
+    private ArrayList<Boolean> estados17 = new ArrayList<>();
+    private ArrayList<Boolean> estados18 = new ArrayList<>();
+    private ArrayList<Boolean> estados19 = new ArrayList<>();
 
 
 
@@ -98,8 +172,6 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
         expListView.setAdapter(listAdapter);
         enableExpandableList();
 
-        /*METODO DE ARCGIS*/
-        //setupMap();
         setCheckEstados();
 
         Basemap.Type basemapType = Basemap.Type.STREETS_VECTOR;
@@ -108,15 +180,142 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
         int levelOfDetail = 16;
         map = new ArcGISMap(basemapType, latitude, longitude, levelOfDetail);
         mapView.setMap(map);
-        ServiceFeatureTable table = new ServiceFeatureTable(SQLConstantes.servicio1);
-        layerFromTable = new FeatureLayer(table);
 
+        ServiceFeatureTable table16_1 = new ServiceFeatureTable(SQLConstantes.servicio16_1);
+        ServiceFeatureTable table16_2 = new ServiceFeatureTable(SQLConstantes.servicio16_2);
+        ServiceFeatureTable table16_3 = new ServiceFeatureTable(SQLConstantes.servicio16_3);
+        ServiceFeatureTable table16_4 = new ServiceFeatureTable(SQLConstantes.servicio16_4);
+        ServiceFeatureTable table16_5 = new ServiceFeatureTable(SQLConstantes.servicio16_5);
+        ServiceFeatureTable table16_6 = new ServiceFeatureTable(SQLConstantes.servicio16_6);
+        ServiceFeatureTable table16_7 = new ServiceFeatureTable(SQLConstantes.servicio16_7);
+        ServiceFeatureTable table16_8 = new ServiceFeatureTable(SQLConstantes.servicio16_8);
+        ServiceFeatureTable table16_9 = new ServiceFeatureTable(SQLConstantes.servicio16_9);
+        ServiceFeatureTable table16_10 = new ServiceFeatureTable(SQLConstantes.servicio16_10);
+        ServiceFeatureTable table16_11 = new ServiceFeatureTable(SQLConstantes.servicio16_11);
+        ServiceFeatureTable table16_12 = new ServiceFeatureTable(SQLConstantes.servicio16_12);
+        ServiceFeatureTable table16_13 = new ServiceFeatureTable(SQLConstantes.servicio16_13);
+        ServiceFeatureTable table16_14 = new ServiceFeatureTable(SQLConstantes.servicio16_14);
+        ServiceFeatureTable table16_15 = new ServiceFeatureTable(SQLConstantes.servicio16_15);
+        ServiceFeatureTable table16_16 = new ServiceFeatureTable(SQLConstantes.servicio16_16);
 
-        //addCapa2(map);
-        //texto.setText(""+estados.get(0));
+        ServiceFeatureTable table17_1 = new ServiceFeatureTable(SQLConstantes.servicio17_1);
+        ServiceFeatureTable table17_2 = new ServiceFeatureTable(SQLConstantes.servicio17_2);
+        ServiceFeatureTable table17_3 = new ServiceFeatureTable(SQLConstantes.servicio17_3);
+        ServiceFeatureTable table17_4 = new ServiceFeatureTable(SQLConstantes.servicio17_4);
+        ServiceFeatureTable table17_5 = new ServiceFeatureTable(SQLConstantes.servicio17_5);
+        ServiceFeatureTable table17_6 = new ServiceFeatureTable(SQLConstantes.servicio17_6);
+        ServiceFeatureTable table17_7 = new ServiceFeatureTable(SQLConstantes.servicio17_7);
+        ServiceFeatureTable table17_8 = new ServiceFeatureTable(SQLConstantes.servicio17_8);
+        ServiceFeatureTable table17_9 = new ServiceFeatureTable(SQLConstantes.servicio17_9);
+        ServiceFeatureTable table17_10 = new ServiceFeatureTable(SQLConstantes.servicio17_10);
+        ServiceFeatureTable table17_11 = new ServiceFeatureTable(SQLConstantes.servicio17_11);
+        ServiceFeatureTable table17_12 = new ServiceFeatureTable(SQLConstantes.servicio17_12);
+        ServiceFeatureTable table17_13 = new ServiceFeatureTable(SQLConstantes.servicio17_13);
+        ServiceFeatureTable table17_14 = new ServiceFeatureTable(SQLConstantes.servicio17_14);
+        ServiceFeatureTable table17_15 = new ServiceFeatureTable(SQLConstantes.servicio17_15);
+        ServiceFeatureTable table17_16 = new ServiceFeatureTable(SQLConstantes.servicio17_16);
 
-        //formDelitos2016(map);
+        ServiceFeatureTable table18_1 = new ServiceFeatureTable(SQLConstantes.servicio18_1);
+        ServiceFeatureTable table18_2 = new ServiceFeatureTable(SQLConstantes.servicio18_2);
+        ServiceFeatureTable table18_3 = new ServiceFeatureTable(SQLConstantes.servicio18_3);
+        ServiceFeatureTable table18_4 = new ServiceFeatureTable(SQLConstantes.servicio18_4);
+        ServiceFeatureTable table18_5 = new ServiceFeatureTable(SQLConstantes.servicio18_5);
+        ServiceFeatureTable table18_6 = new ServiceFeatureTable(SQLConstantes.servicio18_6);
+        ServiceFeatureTable table18_7 = new ServiceFeatureTable(SQLConstantes.servicio18_7);
+        ServiceFeatureTable table18_8 = new ServiceFeatureTable(SQLConstantes.servicio18_8);
+        ServiceFeatureTable table18_9 = new ServiceFeatureTable(SQLConstantes.servicio18_9);
+        ServiceFeatureTable table18_10 = new ServiceFeatureTable(SQLConstantes.servicio18_10);
+        ServiceFeatureTable table18_11 = new ServiceFeatureTable(SQLConstantes.servicio18_11);
+        ServiceFeatureTable table18_12 = new ServiceFeatureTable(SQLConstantes.servicio18_12);
+        ServiceFeatureTable table18_13 = new ServiceFeatureTable(SQLConstantes.servicio18_13);
+        ServiceFeatureTable table18_14 = new ServiceFeatureTable(SQLConstantes.servicio18_14);
+        ServiceFeatureTable table18_15 = new ServiceFeatureTable(SQLConstantes.servicio18_15);
+        ServiceFeatureTable table18_16 = new ServiceFeatureTable(SQLConstantes.servicio18_16);
 
+        ServiceFeatureTable table19_1 = new ServiceFeatureTable(SQLConstantes.servicio19_1);
+        ServiceFeatureTable table19_2 = new ServiceFeatureTable(SQLConstantes.servicio19_2);
+        ServiceFeatureTable table19_3 = new ServiceFeatureTable(SQLConstantes.servicio19_3);
+        ServiceFeatureTable table19_4 = new ServiceFeatureTable(SQLConstantes.servicio19_4);
+        ServiceFeatureTable table19_5 = new ServiceFeatureTable(SQLConstantes.servicio19_5);
+        ServiceFeatureTable table19_6 = new ServiceFeatureTable(SQLConstantes.servicio19_6);
+        ServiceFeatureTable table19_7 = new ServiceFeatureTable(SQLConstantes.servicio19_7);
+        ServiceFeatureTable table19_8 = new ServiceFeatureTable(SQLConstantes.servicio19_8);
+        ServiceFeatureTable table19_9 = new ServiceFeatureTable(SQLConstantes.servicio19_9);
+        ServiceFeatureTable table19_10 = new ServiceFeatureTable(SQLConstantes.servicio19_10);
+        ServiceFeatureTable table19_11 = new ServiceFeatureTable(SQLConstantes.servicio19_11);
+        ServiceFeatureTable table19_12 = new ServiceFeatureTable(SQLConstantes.servicio19_12);
+        ServiceFeatureTable table19_13 = new ServiceFeatureTable(SQLConstantes.servicio19_13);
+        ServiceFeatureTable table19_14 = new ServiceFeatureTable(SQLConstantes.servicio19_14);
+        ServiceFeatureTable table19_15 = new ServiceFeatureTable(SQLConstantes.servicio19_15);
+        ServiceFeatureTable table19_16 = new ServiceFeatureTable(SQLConstantes.servicio19_16);
+
+        layerFromTable16_1 = new FeatureLayer(table16_1);
+        layerFromTable16_2 = new FeatureLayer(table16_2);
+        layerFromTable16_3 = new FeatureLayer(table16_3);
+        layerFromTable16_4 = new FeatureLayer(table16_4);
+        layerFromTable16_5 = new FeatureLayer(table16_5);
+        layerFromTable16_6 = new FeatureLayer(table16_6);
+        layerFromTable16_7 = new FeatureLayer(table16_7);
+        layerFromTable16_8 = new FeatureLayer(table16_8);
+        layerFromTable16_9 = new FeatureLayer(table16_9);
+        layerFromTable16_10 = new FeatureLayer(table16_10);
+        layerFromTable16_11 = new FeatureLayer(table16_11);
+        layerFromTable16_12 = new FeatureLayer(table16_12);
+        layerFromTable16_13 = new FeatureLayer(table16_13);
+        layerFromTable16_14 = new FeatureLayer(table16_14);
+        layerFromTable16_15 = new FeatureLayer(table16_15);
+        layerFromTable16_16 = new FeatureLayer(table16_16);
+
+        layerFromTable17_1 = new FeatureLayer(table17_1);
+        layerFromTable17_2 = new FeatureLayer(table17_2);
+        layerFromTable17_3 = new FeatureLayer(table17_3);
+        layerFromTable17_4 = new FeatureLayer(table17_4);
+        layerFromTable17_5 = new FeatureLayer(table17_5);
+        layerFromTable17_6 = new FeatureLayer(table17_6);
+        layerFromTable17_7 = new FeatureLayer(table17_7);
+        layerFromTable17_8 = new FeatureLayer(table17_8);
+        layerFromTable17_9 = new FeatureLayer(table17_9);
+        layerFromTable17_10 = new FeatureLayer(table17_10);
+        layerFromTable17_11 = new FeatureLayer(table17_11);
+        layerFromTable17_12 = new FeatureLayer(table17_12);
+        layerFromTable17_13 = new FeatureLayer(table17_13);
+        layerFromTable17_14 = new FeatureLayer(table17_14);
+        layerFromTable17_15 = new FeatureLayer(table17_15);
+        layerFromTable17_16 = new FeatureLayer(table17_16);
+
+        layerFromTable18_1 = new FeatureLayer(table18_1);
+        layerFromTable18_2 = new FeatureLayer(table18_2);
+        layerFromTable18_3 = new FeatureLayer(table18_3);
+        layerFromTable18_4 = new FeatureLayer(table18_4);
+        layerFromTable18_5 = new FeatureLayer(table18_5);
+        layerFromTable18_6 = new FeatureLayer(table18_6);
+        layerFromTable18_7 = new FeatureLayer(table18_7);
+        layerFromTable18_8 = new FeatureLayer(table18_8);
+        layerFromTable18_9 = new FeatureLayer(table18_9);
+        layerFromTable18_10 = new FeatureLayer(table18_10);
+        layerFromTable18_11 = new FeatureLayer(table18_11);
+        layerFromTable18_12 = new FeatureLayer(table18_12);
+        layerFromTable18_13 = new FeatureLayer(table18_13);
+        layerFromTable18_14 = new FeatureLayer(table18_14);
+        layerFromTable18_15 = new FeatureLayer(table18_15);
+        layerFromTable18_16 = new FeatureLayer(table18_16);
+
+        layerFromTable19_1 = new FeatureLayer(table19_1);
+        layerFromTable19_2 = new FeatureLayer(table19_2);
+        layerFromTable19_3 = new FeatureLayer(table19_3);
+        layerFromTable19_4 = new FeatureLayer(table19_4);
+        layerFromTable19_5 = new FeatureLayer(table19_5);
+        layerFromTable19_6 = new FeatureLayer(table19_6);
+        layerFromTable19_7 = new FeatureLayer(table19_7);
+        layerFromTable19_8 = new FeatureLayer(table19_8);
+        layerFromTable19_9 = new FeatureLayer(table19_9);
+        layerFromTable19_10 = new FeatureLayer(table19_10);
+        layerFromTable19_11 = new FeatureLayer(table19_11);
+        layerFromTable19_12 = new FeatureLayer(table19_12);
+        layerFromTable19_13 = new FeatureLayer(table19_13);
+        layerFromTable19_14 = new FeatureLayer(table19_14);
+        layerFromTable19_15 = new FeatureLayer(table19_15);
+        layerFromTable19_16 = new FeatureLayer(table19_16);
 
     }
 
@@ -176,17 +375,6 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
         super.onDestroy();
     }
 
-    /*METODO DE CARGADO DE MAPA*/
-    private void setupMap() {
-        if (mapView != null) {
-            Basemap.Type basemapType = Basemap.Type.STREETS_VECTOR;
-            double latitude  = -12.060457;
-            double longitude = -77.041531;
-            int levelOfDetail = 16;
-            ArcGISMap map = new ArcGISMap(basemapType, latitude, longitude, levelOfDetail);
-            mapView.setMap(map);
-        }
-    }
 
     /*METODO DE INTERACCION CON EL ADAPTADOR*/
     private void enableExpandableList() {
@@ -264,16 +452,17 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
                                 Log.i("posicion","1-1");
                                 break;
                             case 2:
-                                formDelitos2016();
+                                sendYearCrime("2016",estados16);
                                 break;
                             case 3:
-                                openDialog();
+                                sendYearCrime("2017",estados17);
                                 break;
                             case 4:
-                                Log.i("posicion","1-4");
+                                sendYearCrime("2018",estados18);
                                 break;
                             case 5:
-                                Log.i("posicion","1-5");
+                                sendYearCrime("2019",estados19);
+                                break;
 
                         }
                         break;
@@ -398,228 +587,184 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
         return child;
     }
 
-    /*SETEAR Y OBTENER VALORES DE CAMPO*/
-
-    public  void formDelitos2016(){
-        AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this,R.style.ThemeOverlay_MaterialComponents_Dialog);
-        final View dialogView = MainActivity.this.getLayoutInflater().inflate(R.layout.layout_denuncias, null);
-        final CheckBox check1 = (CheckBox) dialogView.findViewById(R.id.id_check1);
-        final CheckBox check2 = (CheckBox) dialogView.findViewById(R.id.id_check2);
-        final CheckBox check3 = (CheckBox) dialogView.findViewById(R.id.id_check3);
-        final CheckBox check4 = (CheckBox) dialogView.findViewById(R.id.id_check4);
-        final CheckBox check5 = (CheckBox) dialogView.findViewById(R.id.id_check5);
-        final CheckBox check6 = (CheckBox) dialogView.findViewById(R.id.id_check6);
-        final CheckBox check7 = (CheckBox) dialogView.findViewById(R.id.id_check7);
-        final CheckBox check8 = (CheckBox) dialogView.findViewById(R.id.id_check8);
-        final CheckBox check9 = (CheckBox) dialogView.findViewById(R.id.id_check9);
-        final CheckBox check10 = (CheckBox) dialogView.findViewById(R.id.id_check10);
-        final CheckBox check11 = (CheckBox) dialogView.findViewById(R.id.id_check11);
-        final CheckBox check12 = (CheckBox) dialogView.findViewById(R.id.id_check12);
-        final CheckBox check13 = (CheckBox) dialogView.findViewById(R.id.id_check13);
-        final CheckBox check14 = (CheckBox) dialogView.findViewById(R.id.id_check14);
-        final CheckBox check15 = (CheckBox) dialogView.findViewById(R.id.id_check15);
-        final CheckBox check16 = (CheckBox) dialogView.findViewById(R.id.id_check16);
-        final CheckBox check17 = (CheckBox) dialogView.findViewById(R.id.id_check17);
-        check1.setChecked(estados.get(0));
-        check2.setChecked(estados.get(1));
-        check3.setChecked(estados.get(2));
-        check4.setChecked(estados.get(3));
-        check5.setChecked(estados.get(4));
-        check6.setChecked(estados.get(5));
-        check7.setChecked(estados.get(6));
-        check8.setChecked(estados.get(7));
-        check9.setChecked(estados.get(8));
-        check10.setChecked(estados.get(9));
-        check11.setChecked(estados.get(10));
-        check12.setChecked(estados.get(11));
-        check13.setChecked(estados.get(12));
-        check14.setChecked(estados.get(13));
-        check15.setChecked(estados.get(14));
-        check16.setChecked(estados.get(15));
-        check17.setChecked(estados.get(16));
-        alert.setTitle("Denuncias Delitos");
-        alert.setIcon(R.drawable.ic_place);
-        alert.setView(dialogView);
-        alert.setPositiveButton("OK",null);
-        alert.setNegativeButton("Cancelar",null);
-
-        final AlertDialog alertDialog = alert.create();
-
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialogInterface) {
-                Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        boolean estado1 = check1.isChecked();
-                        boolean estado2 = check2.isChecked();
-                        boolean estado3 = check3.isChecked();
-                        boolean estado4 = check4.isChecked();
-                        boolean estado5 = check5.isChecked();
-                        boolean estado6 = check6.isChecked();
-                        boolean estado7 = check7.isChecked();
-                        boolean estado8 = check8.isChecked();
-                        boolean estado9 = check9.isChecked();
-                        boolean estado10 = check10.isChecked();
-                        boolean estado11 = check11.isChecked();
-                        boolean estado12 = check12.isChecked();
-                        boolean estado13 = check13.isChecked();
-                        boolean estado14 = check14.isChecked();
-                        boolean estado15 = check15.isChecked();
-                        boolean estado16 = check16.isChecked();
-                        boolean estado17 = check17.isChecked();
-                        estados.add(0,estado1);
-                        estados.add(1,estado2);
-                        estados.add(2,estado3);
-                        estados.add(3,estado4);
-                        estados.add(4,estado5);
-                        estados.add(5,estado6);
-                        estados.add(6,estado7);
-                        estados.add(7,estado8);
-                        estados.add(8,estado9);
-                        estados.add(9,estado10);
-                        estados.add(10,estado11);
-                        estados.add(11,estado12);
-                        estados.add(12,estado13);
-                        estados.add(13,estado14);
-                        estados.add(14,estado15);
-                        estados.add(15,estado16);
-                        estados.add(16,estado17);
-                        //addCapa1(map,estado1);
-                        addCapax(estado1);
-                        Toast.makeText(MainActivity.this,"check1"+estado1,Toast.LENGTH_SHORT).show();
-                        alertDialog.dismiss();
-
-                    }
-                });
-            }
-        });
-        alertDialog.show();
-    }
-
     /*SETEAR CAPAS*/
-    private void addCapa1(final ArcGISMap map1,boolean estado) {
-        ServiceFeatureTable table = new ServiceFeatureTable(SQLConstantes.servicio1);
-        FeatureLayer layerFromTable = new FeatureLayer(table);
-        //ArcGISMap map1 = mapView.getMap();
-        if(estado==true){
-            map1.getOperationalLayers().add(layerFromTable);
-            Toast.makeText(MainActivity.this,"addCapa1"+estado,Toast.LENGTH_SHORT).show();
-        }
-        else
+     private void addLayers(boolean estado,FeatureLayer capa) {
+        if(estado==true)
         {
-            map1.getOperationalLayers().remove(layerFromTable);
-            Toast.makeText(MainActivity.this,"addCapa1"+estado,Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void addCapa2(final ArcGISMap mapa) {
-        checkBox1 = findViewById(R.id.id_check1);
-        ServiceFeatureTable table = new ServiceFeatureTable(SQLConstantes.servicio1);
-        FeatureLayer layerFromTable = new FeatureLayer(table);
-
-        checkBox1.setOnClickListener(view -> {
-            if (checkBox1.isChecked() == true) {
-                Log.i("Mensaje","Entro a CheckBox:true");
-                mapa.getOperationalLayers().add(layerFromTable);
-
-            }
-            if (checkBox1.isChecked() == false) {
-                Log.i("Mensaje","Entro a CheckBox:false");
-                mapa.getOperationalLayers().remove(layerFromTable);
-
-            }
-        });
-    }
-
-    private void addCapa3(final ArcGISMap map1,boolean estado) {
-        ServiceFeatureTable table = new ServiceFeatureTable(SQLConstantes.servicio1);
-        FeatureLayer layerFromTable = new FeatureLayer(table);
-        //ArcGISMap map1 = mapView.getMap();
-        if(estado==true){
-            //texto.setText("t:"+estados.get(0));
-            map1.getOperationalLayers().add(layerFromTable);
-            Toast.makeText(MainActivity.this,"addCapa1"+estado,Toast.LENGTH_SHORT).show();
-        }
+            //map.getOperationalLayers().clear();
+            map.getOperationalLayers().add(capa);}
         else
-        {
-            //texto.setText("f:"+estados.get(0));
-            map1.getOperationalLayers().remove(layerFromTable);
-            Toast.makeText(MainActivity.this,"addCapa1"+estado,Toast.LENGTH_SHORT).show();
-        }
+        { map.getOperationalLayers().remove(capa);}
     }
 
-    private void addCapax(boolean estado) {
-
-        if(estado==true){
-            map.getOperationalLayers().add(layerFromTable);
-            Toast.makeText(MainActivity.this,"addCapa1"+estado,Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            map.getOperationalLayers().remove(layerFromTable);
-            Toast.makeText(MainActivity.this,"addCapa1"+estado,Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-//    private void addLayer2_1(final ArcGISMap map) {
-//
-//        ServiceFeatureTable table =
-//                new ServiceFeatureTable("http://arcgis.inei.gob.pe:6080/arcgis/rest/services/CRIMINALIDAD/PUNTOS_CRI_MODULO_CIUDADANO/MapServer/21");
-//        FeatureLayer layerFromTable = new FeatureLayer(table);
-//
-//
-//
-//        findViewById(R.id.chek2_1).setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                if(checkBox2_1.isChecked()==true){
-//                    map.getOperationalLayers().add(layerFromTable);                                // borrador = 6
-//
-//                }if(checkBox2_1.isChecked()==false){
-//                    map.getOperationalLayers().remove(layerFromTable);
-//
-//                }
-//            }
-//        });
-//
-//
-//    }
-
+    /*SETEAR ESTADOS AL ARRAYLIST*/
     private void setCheckEstados(){
-        if(estados.size()==0){
-            estados.add(0,false);
-            estados.add(1,false);
-            estados.add(2,false);
-            estados.add(3,false);
-            estados.add(4,false);
-            estados.add(5,false);
-            estados.add(6,false);
-            estados.add(7,false);
-            estados.add(8,false);
-            estados.add(9,false);
-            estados.add(10,false);
-            estados.add(11,false);
-            estados.add(12,false);
-            estados.add(13,false);
-            estados.add(14,false);
-            estados.add(15,false);
-            estados.add(16,false);
+        if(estados16.size()==0){
+            for(int i=0;i<17;i++)
+            {estados16.add(i,false);}
+        }
+        if(estados17.size()==0){
+            for(int i=0;i<17;i++)
+            {estados17.add(i,false);}
+        }
+        if(estados18.size()==0){
+            for(int i=0;i<17;i++)
+            {estados18.add(i,false);}
+        }
+        if(estados19.size()==0){
+            for(int i=0;i<17;i++)
+            {estados19.add(i,false);}
         }
     }
 
+    /*METODO QUE OBTIENE LOS ARRAYLIST DE DialogDelitos*/
     @Override
-    public void applyTexts(ArrayList<Boolean> estadosx) {
-        estados.add(0,estadosx.get(0));
-        texto.setText(""+estados.get(0));
-        addCapax(estados.get(0));
+    public void applyTexts(ArrayList<Boolean> stateLayers,String anio) {
+
+        if(anio=="2016"){
+        estados16.add(0,stateLayers.get(0));
+        estados16.add(1,stateLayers.get(1));
+        estados16.add(2,stateLayers.get(2));
+        estados16.add(3,stateLayers.get(3));
+        estados16.add(4,stateLayers.get(4));
+        estados16.add(5,stateLayers.get(5));
+        estados16.add(6,stateLayers.get(6));
+        estados16.add(7,stateLayers.get(7));
+        estados16.add(8,stateLayers.get(8));
+        estados16.add(9,stateLayers.get(9));
+        estados16.add(10,stateLayers.get(10));
+        estados16.add(11,stateLayers.get(11));
+        estados16.add(12,stateLayers.get(12));
+        estados16.add(13,stateLayers.get(13));
+        estados16.add(14,stateLayers.get(14));
+        estados16.add(15,stateLayers.get(15));
+        estados16.add(16,stateLayers.get(16));
+        addLayers(estados16.get(1),layerFromTable16_1);
+        addLayers(estados16.get(2),layerFromTable16_2);
+        addLayers(estados16.get(3),layerFromTable16_3);
+        addLayers(estados16.get(4),layerFromTable16_4);
+        addLayers(estados16.get(5),layerFromTable16_5);
+        addLayers(estados16.get(6),layerFromTable16_6);
+        addLayers(estados16.get(7),layerFromTable16_7);
+        addLayers(estados16.get(8),layerFromTable16_8);
+        addLayers(estados16.get(9),layerFromTable16_9);
+        addLayers(estados16.get(10),layerFromTable16_10);
+        addLayers(estados16.get(11),layerFromTable16_11);
+        addLayers(estados16.get(12),layerFromTable16_12);
+        addLayers(estados16.get(13),layerFromTable16_13);
+        addLayers(estados16.get(14),layerFromTable16_14);
+        addLayers(estados16.get(15),layerFromTable16_15);
+        addLayers(estados16.get(16),layerFromTable16_16);}
+        else
+        if(anio=="2017"){
+        estados17.add(0,stateLayers.get(0));
+        estados17.add(1,stateLayers.get(1));
+        estados17.add(2,stateLayers.get(2));
+        estados17.add(3,stateLayers.get(3));
+        estados17.add(4,stateLayers.get(4));
+        estados17.add(5,stateLayers.get(5));
+        estados17.add(6,stateLayers.get(6));
+        estados17.add(7,stateLayers.get(7));
+        estados17.add(8,stateLayers.get(8));
+        estados17.add(9,stateLayers.get(9));
+        estados17.add(10,stateLayers.get(10));
+        estados17.add(11,stateLayers.get(11));
+        estados17.add(12,stateLayers.get(12));
+        estados17.add(13,stateLayers.get(13));
+        estados17.add(14,stateLayers.get(14));
+        estados17.add(15,stateLayers.get(15));
+        estados17.add(16,stateLayers.get(16));
+        addLayers(estados17.get(1),layerFromTable17_1);
+        addLayers(estados17.get(2),layerFromTable17_2);
+        addLayers(estados17.get(3),layerFromTable17_3);
+        addLayers(estados17.get(4),layerFromTable17_4);
+        addLayers(estados17.get(5),layerFromTable17_5);
+        addLayers(estados17.get(6),layerFromTable17_6);
+        addLayers(estados17.get(7),layerFromTable17_7);
+        addLayers(estados17.get(8),layerFromTable17_8);
+        addLayers(estados17.get(9),layerFromTable17_9);
+        addLayers(estados17.get(10),layerFromTable17_10);
+        addLayers(estados17.get(11),layerFromTable17_11);
+        addLayers(estados17.get(12),layerFromTable17_12);
+        addLayers(estados17.get(13),layerFromTable17_13);
+        addLayers(estados17.get(14),layerFromTable17_14);
+        addLayers(estados17.get(15),layerFromTable17_15);
+        addLayers(estados17.get(16),layerFromTable17_16);}
+        else
+        if(anio=="2018"){
+        estados18.add(0,stateLayers.get(0));
+        estados18.add(1,stateLayers.get(1));
+        estados18.add(2,stateLayers.get(2));
+        estados18.add(3,stateLayers.get(3));
+        estados18.add(4,stateLayers.get(4));
+        estados18.add(5,stateLayers.get(5));
+        estados18.add(6,stateLayers.get(6));
+        estados18.add(7,stateLayers.get(7));
+        estados18.add(8,stateLayers.get(8));
+        estados18.add(9,stateLayers.get(9));
+        estados18.add(10,stateLayers.get(10));
+        estados18.add(11,stateLayers.get(11));
+        estados18.add(12,stateLayers.get(12));
+        estados18.add(13,stateLayers.get(13));
+        estados18.add(14,stateLayers.get(14));
+        estados18.add(15,stateLayers.get(15));
+        estados18.add(16,stateLayers.get(16));
+        addLayers(estados18.get(1),layerFromTable18_1);
+        addLayers(estados18.get(2),layerFromTable18_2);
+        addLayers(estados18.get(3),layerFromTable18_3);
+        addLayers(estados18.get(4),layerFromTable18_4);
+        addLayers(estados18.get(5),layerFromTable18_5);
+        addLayers(estados18.get(6),layerFromTable18_6);
+        addLayers(estados18.get(7),layerFromTable18_7);
+        addLayers(estados18.get(8),layerFromTable18_8);
+        addLayers(estados18.get(9),layerFromTable18_9);
+        addLayers(estados18.get(10),layerFromTable18_10);
+        addLayers(estados18.get(11),layerFromTable18_11);
+        addLayers(estados18.get(12),layerFromTable18_12);
+        addLayers(estados18.get(13),layerFromTable18_13);
+        addLayers(estados18.get(14),layerFromTable18_14);
+        addLayers(estados18.get(15),layerFromTable18_15);
+        addLayers(estados18.get(16),layerFromTable18_16);}
+        else
+        if(anio=="2019"){
+        estados19.add(0,stateLayers.get(0));
+        estados19.add(1,stateLayers.get(1));
+        estados19.add(2,stateLayers.get(2));
+        estados19.add(3,stateLayers.get(3));
+        estados19.add(4,stateLayers.get(4));
+        estados19.add(5,stateLayers.get(5));
+        estados19.add(6,stateLayers.get(6));
+        estados19.add(7,stateLayers.get(7));
+        estados19.add(8,stateLayers.get(8));
+        estados19.add(9,stateLayers.get(9));
+        estados19.add(10,stateLayers.get(10));
+        estados19.add(11,stateLayers.get(11));
+        estados19.add(12,stateLayers.get(12));
+        estados19.add(13,stateLayers.get(13));
+        estados19.add(14,stateLayers.get(14));
+        estados19.add(15,stateLayers.get(15));
+        estados19.add(16,stateLayers.get(16));
+        addLayers(estados19.get(1),layerFromTable19_1);
+        addLayers(estados19.get(2),layerFromTable19_2);
+        addLayers(estados19.get(3),layerFromTable19_3);
+        addLayers(estados19.get(4),layerFromTable19_4);
+        addLayers(estados19.get(5),layerFromTable19_5);
+        addLayers(estados19.get(6),layerFromTable19_6);
+        addLayers(estados19.get(7),layerFromTable19_7);
+        addLayers(estados19.get(8),layerFromTable19_8);
+        addLayers(estados19.get(9),layerFromTable19_9);
+        addLayers(estados19.get(10),layerFromTable19_10);
+        addLayers(estados19.get(11),layerFromTable19_11);
+        addLayers(estados19.get(12),layerFromTable19_12);
+        addLayers(estados19.get(13),layerFromTable19_13);
+        addLayers(estados19.get(14),layerFromTable19_14);
+        addLayers(estados19.get(15),layerFromTable19_15);
+        addLayers(estados19.get(16),layerFromTable19_16);}
     }
 
-    public void openDialog() {
-        DialogDelitos dialogo = new DialogDelitos();
-        dialogo.show(getSupportFragmentManager(), "Dialog Delitos");
+    /*METODO QUE ENVIA ANO Y ESTADOS*/
+    public void sendYearCrime(String anio,ArrayList<Boolean> estados) {
+        DialogDelitos form = DialogDelitos.newInstance(anio,estados);
+        form.show(getSupportFragmentManager(), DialogDelitos.TAG);
     }
 }
