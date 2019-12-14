@@ -34,7 +34,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.material.navigation.NavigationView;
 import com.inei.appdatacrim.R;
 import com.inei.appdatacrim.adapters.ExpandListAdapter;
+import com.inei.appdatacrim.dialogs.DialogComisarias;
 import com.inei.appdatacrim.dialogs.DialogDelitos;
+import com.inei.appdatacrim.dialogs.DialogResidencias;
 import com.inei.appdatacrim.fragments.FragmentMapa;
 import com.inei.appdatacrim.fragments.FragmentMapa2;
 import com.inei.appdatacrim.modelo.SQLConstantes;
@@ -45,7 +47,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DialogDelitos.SendDialogListener {
+public class MainActivity extends AppCompatActivity implements DialogDelitos.SendDialogListener,DialogComisarias.SendDialogComisariasListener, DialogResidencias.SendDialogResidenciasListener {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private Button boton;
@@ -64,6 +66,10 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
 
 
     private ArcGISMap map ;
+
+    private FeatureLayer layerFromTableComisarias;
+    private FeatureLayer layerFromTableResidencias;
+
     private FeatureLayer layerFromTable16_0;
     private FeatureLayer layerFromTable16_1;
     private FeatureLayer layerFromTable16_2;
@@ -137,6 +143,8 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
     private FeatureLayer layerFromTable19_16;
 
 
+    private ArrayList<Boolean> estadosComisaria  = new ArrayList<>();
+    private ArrayList<Boolean> estadosResidencia = new ArrayList<>();
 
     private ArrayList<Boolean> estados16 = new ArrayList<>();
     private ArrayList<Boolean> estados17 = new ArrayList<>();
@@ -180,6 +188,9 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
         int levelOfDetail = 16;
         map = new ArcGISMap(basemapType, latitude, longitude, levelOfDetail);
         mapView.setMap(map);
+
+        ServiceFeatureTable tableComisarias = new ServiceFeatureTable(SQLConstantes.servicioComisarias);
+        ServiceFeatureTable tableResidencias = new ServiceFeatureTable(SQLConstantes.servicioPuntoResidencia);
 
         ServiceFeatureTable table16_1 = new ServiceFeatureTable(SQLConstantes.servicio16_1);
         ServiceFeatureTable table16_2 = new ServiceFeatureTable(SQLConstantes.servicio16_2);
@@ -317,6 +328,9 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
         layerFromTable19_15 = new FeatureLayer(table19_15);
         layerFromTable19_16 = new FeatureLayer(table19_16);
 
+        layerFromTableComisarias = new FeatureLayer(tableComisarias);
+        layerFromTableResidencias = new FeatureLayer(tableResidencias);
+
     }
 
     @Override
@@ -392,76 +406,23 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
                     case 0:
                         switch (childPosition) {
                             case 0:
-                                AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this,R.style.ThemeOverlay_MaterialComponents_Dialog);
-                                final View dialogView = MainActivity.this.getLayoutInflater().inflate(R.layout.layout_comisaria_area, null);
-
-                                alert.setTitle("Area de Vista");
-                                alert.setView(dialogView);
-                                alert.setNegativeButton("Cancelar",null);
-
-                                final AlertDialog alertDialog = alert.create();
-
-                                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                                    @Override
-                                    public void onShow(DialogInterface dialogInterface) {
-                                        Button b = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                                        b.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                alertDialog.dismiss();
-                                            }
-                                        });
-                                    }
-                                });
-                                alertDialog.show();
-                                Log.i("posicion","0-0");
-                                break;
-                            case 1:
-                                AlertDialog.Builder alert2 = new AlertDialog.Builder(MainActivity.this,R.style.ThemeOverlay_MaterialComponents_Dialog);
-                                final View dialogView2 = MainActivity.this.getLayoutInflater().inflate(R.layout.layout_comisaria_distrito, null);
-
-                                alert2.setTitle("En el Distrito");
-                                alert2.setView(dialogView2);
-                                alert2.setNegativeButton("Cancelar",null);
-
-                                final AlertDialog alertDialog2 = alert2.create();
-
-                                alertDialog2.setOnShowListener(new DialogInterface.OnShowListener() {
-                                    @Override
-                                    public void onShow(DialogInterface dialogInterface) {
-                                        Button b = alertDialog2.getButton(AlertDialog.BUTTON_NEGATIVE);
-                                        b.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                alertDialog2.dismiss();
-                                            }
-                                        });
-                                    }
-                                });
-                                alertDialog2.show();
-                                Log.i("posicion","0-1");
+                                sendComisaria(estadosComisaria);
                                 break;
                         }
                         break;
                     case 1:
                         switch (childPosition) {
                             case 0:
-                                Log.i("posicion","1-0");
+                                sendDelito("2016",estados16);
                                 break;
                             case 1:
-                                Log.i("posicion","1-1");
+                                sendDelito("2017",estados17);
                                 break;
                             case 2:
-                                sendYearCrime("2016",estados16);
+                                sendDelito("2018",estados18);
                                 break;
                             case 3:
-                                sendYearCrime("2017",estados17);
-                                break;
-                            case 4:
-                                sendYearCrime("2018",estados18);
-                                break;
-                            case 5:
-                                sendYearCrime("2019",estados19);
+                                sendDelito("2019",estados19);
                                 break;
 
                         }
@@ -469,11 +430,8 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
                     case 2:
                         switch (childPosition) {
                             case 0:
-                                Log.i("posicion","2-0");
+                                sendResidencia(estadosResidencia);
                                 break;
-                            case 1:
-                                Log.i("posicion","2-1");
-
                         }
                         break;
                     case 3:
@@ -526,13 +484,13 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
                         break;
                 }
 
-                if(groupPosition>=0 && childPosition==0)
+                if(groupPosition>=0 && childPosition>=0)
                 {
 
-                    FragmentMapa newFragment = new FragmentMapa();
+                    //FragmentMapa newFragment = new FragmentMapa();
                     //newFragment.setArguments(args);
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.contedor_fragments,newFragment).commit();
+                    //FragmentManager fragmentManager = getSupportFragmentManager();
+                    //fragmentManager.beginTransaction().replace(R.id.contedor_fragments,newFragment).commit();
                     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
                     drawer.closeDrawer(GravityCompat.START);
                 }
@@ -556,21 +514,17 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
     public HashMap<String, List<String>> obtenerListDataChild(){
         HashMap<String, List<String>> child = new HashMap<String, List<String>>();
         List<String> grupo1 = new ArrayList<String>();
-        grupo1.add(0,"Area de Vista");
-        grupo1.add(1,"En el Distrito");
+        grupo1.add(0,"Ubicación Comisarías");
 
         List<String> grupo2 = new ArrayList<String>();
-        grupo2.add(0,"Ver Mapa de Calor del 2016 al 2019");
-        grupo2.add(1,"Ver Puntos de Delitos del 2016 al 2019");
-        grupo2.add(2,"2016");
-        grupo2.add(3,"2017");
-        grupo2.add(4,"2018");
-        grupo2.add(5,"2019");
+        grupo2.add(0,"2016");
+        grupo2.add(1,"2017");
+        grupo2.add(2,"2018");
+        grupo2.add(3,"2019");
 
 
         List<String> grupo3 = new ArrayList<String>();
-        grupo3.add(0,"Ver Mapa de Calor");
-        grupo3.add(1,"Ver Puntos de Residencia");
+        grupo3.add(0,"Ver Puntos de Residencia");
 
         List<String> grupo4 = new ArrayList<String>();
         grupo4.add(0,"2016");
@@ -599,6 +553,14 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
 
     /*SETEAR ESTADOS AL ARRAYLIST*/
     private void setCheckEstados(){
+        if(estadosComisaria.size()==0){
+            for(int i=0;i<1;i++)
+            {estadosComisaria.add(i,false);}
+        }
+        if(estadosResidencia.size()==0){
+            for(int i=0;i<1;i++)
+            {estadosResidencia.add(i,false);}
+        }
         if(estados16.size()==0){
             for(int i=0;i<17;i++)
             {estados16.add(i,false);}
@@ -617,9 +579,18 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
         }
     }
 
-    /*METODO QUE OBTIENE LOS ARRAYLIST DE DialogDelitos*/
+    /*METODOS DE INTERACCION CON DIALOGOS*/
+
+    //Metodo que recibe datos de Dialogcomisarias//
     @Override
-    public void applyTexts(ArrayList<Boolean> stateLayers,String anio) {
+    public void receiveComisaria(ArrayList<Boolean> estados) {
+        estadosComisaria.add(0,estados.get(0));
+        addLayers(estadosComisaria.get(0),layerFromTableComisarias);
+    }
+
+    //Metodo que recibe datos de DialogDelitos//
+    @Override
+    public void receiveDelito(ArrayList<Boolean> stateLayers,String anio) {
 
         if(anio=="2016"){
         estados16.add(0,stateLayers.get(0));
@@ -762,9 +733,32 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
         addLayers(estados19.get(16),layerFromTable19_16);}
     }
 
-    /*METODO QUE ENVIA ANO Y ESTADOS*/
-    public void sendYearCrime(String anio,ArrayList<Boolean> estados) {
+    //Metodo que recibe datos de DialogResidencias//
+    @Override
+    public void receiveResidencia(ArrayList<Boolean> estados) {
+        estadosResidencia.add(0,estados.get(0));
+        addLayers(estadosResidencia.get(0),layerFromTableResidencias);
+    }
+
+    /*Metodo que envia datos DialogComisarias*/
+    public void sendComisaria(ArrayList<Boolean> estados) {
+        DialogComisarias form = DialogComisarias.newInstance(estados);
+        form.show(getSupportFragmentManager(), DialogComisarias.TAG);
+
+    }
+
+    /*Metodo que envia datos DialogDelitos*/
+    public void sendDelito(String anio,ArrayList<Boolean> estados) {
         DialogDelitos form = DialogDelitos.newInstance(anio,estados);
         form.show(getSupportFragmentManager(), DialogDelitos.TAG);
     }
+
+    /*Metodo que envia datos DialogResidencias*/
+    public void sendResidencia(ArrayList<Boolean> estados) {
+        DialogResidencias form = DialogResidencias.newInstance(estados);
+        form.show(getSupportFragmentManager(), DialogResidencias.TAG);
+
+    }
+
+
 }

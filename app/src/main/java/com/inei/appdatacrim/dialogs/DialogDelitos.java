@@ -159,7 +159,7 @@ public class DialogDelitos extends AppCompatDialogFragment {
                         estados.add(estado14);
                         estados.add(estado15);
                         estados.add(estado16);
-                        listener.applyTexts(estados,getArguments().getString(ANIO));
+                        listener.receiveDelito(estados,getArguments().getString(ANIO));
                     }
                 });
 
@@ -186,7 +186,7 @@ public class DialogDelitos extends AppCompatDialogFragment {
     }
 
     public interface SendDialogListener {
-        void applyTexts(ArrayList<Boolean> estados,String anio);
+        void receiveDelito(ArrayList<Boolean> estados,String anio);
     }
 
 

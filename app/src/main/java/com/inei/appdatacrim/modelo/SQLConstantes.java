@@ -2,6 +2,9 @@ package com.inei.appdatacrim.modelo;
 
 public class SQLConstantes {
 
+    public static String servicioPuntoResidencia = "http://arcgis1.inei.gob.pe:6080/arcgis/rest/services/CRIMINALIDAD/DATACRIM005_AGS_PUNTOSDELITOS_CIUDADANO/MapServer/2";
+    public static String servicioComisarias      = "http://arcgis1.inei.gob.pe:6080/arcgis/rest/services/CRIMINALIDAD/DATACRIM005_AGS_PUNTOSDELITOS_CIUDADANO/MapServer/76";
+
     public static String servicio16_1 = "http://arcgis1.inei.gob.pe:6080/arcgis/rest/services/CRIMINALIDAD/DATACRIM005_AGS_PUNTOSDELITOS_CIUDADANO/MapServer/10";
     public static String servicio16_2 = "http://arcgis1.inei.gob.pe:6080/arcgis/rest/services/CRIMINALIDAD/DATACRIM005_AGS_PUNTOSDELITOS_CIUDADANO/MapServer/11";
     public static String servicio16_3 = "http://arcgis1.inei.gob.pe:6080/arcgis/rest/services/CRIMINALIDAD/DATACRIM005_AGS_PUNTOSDELITOS_CIUDADANO/MapServer/12";
