@@ -1,10 +1,17 @@
 package com.inei.appdatacrim.activities;
 
+import android.Manifest;
 import android.animation.ArgbEvaluator;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -12,6 +19,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,21 +29,37 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
+import com.esri.arcgisruntime.concurrent.ListenableFuture;
 import com.esri.arcgisruntime.data.ServiceFeatureTable;
 import com.esri.arcgisruntime.layers.FeatureLayer;
+import com.esri.arcgisruntime.loadable.LoadStatus;
 import com.esri.arcgisruntime.mapping.ArcGISMap;
 import com.esri.arcgisruntime.mapping.Basemap;
+import com.esri.arcgisruntime.mapping.view.Graphic;
+import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
+import com.esri.arcgisruntime.mapping.view.LocationDisplay;
 import com.esri.arcgisruntime.mapping.view.MapView;
+import com.esri.arcgisruntime.symbology.SimpleMarkerSymbol;
+import com.esri.arcgisruntime.symbology.TextSymbol;
+import com.esri.arcgisruntime.tasks.geocode.GeocodeParameters;
+import com.esri.arcgisruntime.tasks.geocode.GeocodeResult;
+import com.esri.arcgisruntime.tasks.geocode.LocatorTask;
+import com.esri.arcgisruntime.util.ListenableList;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.inei.appdatacrim.R;
 import com.inei.appdatacrim.adapters.ExpandListAdapter;
 import com.inei.appdatacrim.dialogs.DialogComisarias;
 import com.inei.appdatacrim.dialogs.DialogDelitos;
+import com.inei.appdatacrim.dialogs.DialogDelitosGraficos;
+import com.inei.appdatacrim.dialogs.DialogMensajes;
 import com.inei.appdatacrim.dialogs.DialogResidencias;
 import com.inei.appdatacrim.fragments.FragmentMapa;
 import com.inei.appdatacrim.fragments.FragmentMapa2;
@@ -46,16 +70,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity implements DialogDelitos.SendDialogListener,DialogComisarias.SendDialogComisariasListener, DialogResidencias.SendDialogResidenciasListener {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private Button boton;
+    private FloatingActionButton btn_message;
+    private FloatingActionButton btn_gps;
+    private SearchView mSearchView = null;
 
     private MapView mapView;
-    //private ArcGISMap map;
-    private TextView texto;
-
+    private ArcGISMap map ;
+    private LocationDisplay mLocationDisplay;
+    private GraphicsOverlay mGraphicsOverlay;
+    private LocatorTask mLocatorTask = null;
+    private GeocodeParameters mGeocodeParameters = null;
+    public static final  LocationDisplay.AutoPanMode NAVEGATION = null;
 
     private ArrayList<String> listDataHeader;
     private ExpandableListView expListView;
@@ -64,84 +94,8 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
     private MenuItem menuItems;
     private CheckBox checkBox1;
 
-
-    private ArcGISMap map ;
-
     private FeatureLayer layerFromTableComisarias;
     private FeatureLayer layerFromTableResidencias;
-
-    private FeatureLayer layerFromTable16_0;
-    private FeatureLayer layerFromTable16_1;
-    private FeatureLayer layerFromTable16_2;
-    private FeatureLayer layerFromTable16_3;
-    private FeatureLayer layerFromTable16_4;
-    private FeatureLayer layerFromTable16_5;
-    private FeatureLayer layerFromTable16_6;
-    private FeatureLayer layerFromTable16_7;
-    private FeatureLayer layerFromTable16_8;
-    private FeatureLayer layerFromTable16_9;
-    private FeatureLayer layerFromTable16_10;
-    private FeatureLayer layerFromTable16_11;
-    private FeatureLayer layerFromTable16_12;
-    private FeatureLayer layerFromTable16_13;
-    private FeatureLayer layerFromTable16_14;
-    private FeatureLayer layerFromTable16_15;
-    private FeatureLayer layerFromTable16_16;
-
-    private FeatureLayer layerFromTable17_0;
-    private FeatureLayer layerFromTable17_1;
-    private FeatureLayer layerFromTable17_2;
-    private FeatureLayer layerFromTable17_3;
-    private FeatureLayer layerFromTable17_4;
-    private FeatureLayer layerFromTable17_5;
-    private FeatureLayer layerFromTable17_6;
-    private FeatureLayer layerFromTable17_7;
-    private FeatureLayer layerFromTable17_8;
-    private FeatureLayer layerFromTable17_9;
-    private FeatureLayer layerFromTable17_10;
-    private FeatureLayer layerFromTable17_11;
-    private FeatureLayer layerFromTable17_12;
-    private FeatureLayer layerFromTable17_13;
-    private FeatureLayer layerFromTable17_14;
-    private FeatureLayer layerFromTable17_15;
-    private FeatureLayer layerFromTable17_16;
-
-    private FeatureLayer layerFromTable18_0;
-    private FeatureLayer layerFromTable18_1;
-    private FeatureLayer layerFromTable18_2;
-    private FeatureLayer layerFromTable18_3;
-    private FeatureLayer layerFromTable18_4;
-    private FeatureLayer layerFromTable18_5;
-    private FeatureLayer layerFromTable18_6;
-    private FeatureLayer layerFromTable18_7;
-    private FeatureLayer layerFromTable18_8;
-    private FeatureLayer layerFromTable18_9;
-    private FeatureLayer layerFromTable18_10;
-    private FeatureLayer layerFromTable18_11;
-    private FeatureLayer layerFromTable18_12;
-    private FeatureLayer layerFromTable18_13;
-    private FeatureLayer layerFromTable18_14;
-    private FeatureLayer layerFromTable18_15;
-    private FeatureLayer layerFromTable18_16;
-
-    private FeatureLayer layerFromTable19_0;
-    private FeatureLayer layerFromTable19_1;
-    private FeatureLayer layerFromTable19_2;
-    private FeatureLayer layerFromTable19_3;
-    private FeatureLayer layerFromTable19_4;
-    private FeatureLayer layerFromTable19_5;
-    private FeatureLayer layerFromTable19_6;
-    private FeatureLayer layerFromTable19_7;
-    private FeatureLayer layerFromTable19_8;
-    private FeatureLayer layerFromTable19_9;
-    private FeatureLayer layerFromTable19_10;
-    private FeatureLayer layerFromTable19_11;
-    private FeatureLayer layerFromTable19_12;
-    private FeatureLayer layerFromTable19_13;
-    private FeatureLayer layerFromTable19_14;
-    private FeatureLayer layerFromTable19_15;
-    private FeatureLayer layerFromTable19_16;
-
 
     private ArrayList<Boolean> estadosComisaria  = new ArrayList<>();
     private ArrayList<Boolean> estadosResidencia = new ArrayList<>();
@@ -151,26 +105,26 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
     private ArrayList<Boolean> estados18 = new ArrayList<>();
     private ArrayList<Boolean> estados19 = new ArrayList<>();
 
-
-
+    private ArrayList<FeatureLayer> featureLayers16 = new ArrayList<>();
+    private ArrayList<FeatureLayer> featureLayers17 = new ArrayList<>();
+    private ArrayList<FeatureLayer> featureLayers18 = new ArrayList<>();
+    private ArrayList<FeatureLayer> featureLayers19 = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mapView = findViewById(R.id.mapView);
-        texto = findViewById(R.id.idtexto);
-        //checkBox1 = findViewById(R.id.id_check1);
         drawerLayout =(DrawerLayout)findViewById(R.id.drawer);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+        btn_message = (FloatingActionButton)findViewById(R.id.btn_message);
+        btn_gps = (FloatingActionButton)findViewById(R.id.btn_gps);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_drawer);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(navigationView);
-
-
 
         /*Lista Expandible en DRAWER*/
         listDataHeader = new ArrayList<String>();
@@ -188,10 +142,13 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
         int levelOfDetail = 16;
         map = new ArcGISMap(basemapType, latitude, longitude, levelOfDetail);
         mapView.setMap(map);
+        setupLocationDisplay();
+        //setupLocator();
 
         ServiceFeatureTable tableComisarias = new ServiceFeatureTable(SQLConstantes.servicioComisarias);
         ServiceFeatureTable tableResidencias = new ServiceFeatureTable(SQLConstantes.servicioPuntoResidencia);
 
+        ServiceFeatureTable table16_0 = new ServiceFeatureTable(SQLConstantes.servicio16_0);
         ServiceFeatureTable table16_1 = new ServiceFeatureTable(SQLConstantes.servicio16_1);
         ServiceFeatureTable table16_2 = new ServiceFeatureTable(SQLConstantes.servicio16_2);
         ServiceFeatureTable table16_3 = new ServiceFeatureTable(SQLConstantes.servicio16_3);
@@ -207,8 +164,8 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
         ServiceFeatureTable table16_13 = new ServiceFeatureTable(SQLConstantes.servicio16_13);
         ServiceFeatureTable table16_14 = new ServiceFeatureTable(SQLConstantes.servicio16_14);
         ServiceFeatureTable table16_15 = new ServiceFeatureTable(SQLConstantes.servicio16_15);
-        ServiceFeatureTable table16_16 = new ServiceFeatureTable(SQLConstantes.servicio16_16);
 
+        ServiceFeatureTable table17_0 = new ServiceFeatureTable(SQLConstantes.servicio17_0);
         ServiceFeatureTable table17_1 = new ServiceFeatureTable(SQLConstantes.servicio17_1);
         ServiceFeatureTable table17_2 = new ServiceFeatureTable(SQLConstantes.servicio17_2);
         ServiceFeatureTable table17_3 = new ServiceFeatureTable(SQLConstantes.servicio17_3);
@@ -224,8 +181,8 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
         ServiceFeatureTable table17_13 = new ServiceFeatureTable(SQLConstantes.servicio17_13);
         ServiceFeatureTable table17_14 = new ServiceFeatureTable(SQLConstantes.servicio17_14);
         ServiceFeatureTable table17_15 = new ServiceFeatureTable(SQLConstantes.servicio17_15);
-        ServiceFeatureTable table17_16 = new ServiceFeatureTable(SQLConstantes.servicio17_16);
 
+        ServiceFeatureTable table18_0 = new ServiceFeatureTable(SQLConstantes.servicio18_0);
         ServiceFeatureTable table18_1 = new ServiceFeatureTable(SQLConstantes.servicio18_1);
         ServiceFeatureTable table18_2 = new ServiceFeatureTable(SQLConstantes.servicio18_2);
         ServiceFeatureTable table18_3 = new ServiceFeatureTable(SQLConstantes.servicio18_3);
@@ -241,8 +198,8 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
         ServiceFeatureTable table18_13 = new ServiceFeatureTable(SQLConstantes.servicio18_13);
         ServiceFeatureTable table18_14 = new ServiceFeatureTable(SQLConstantes.servicio18_14);
         ServiceFeatureTable table18_15 = new ServiceFeatureTable(SQLConstantes.servicio18_15);
-        ServiceFeatureTable table18_16 = new ServiceFeatureTable(SQLConstantes.servicio18_16);
 
+        ServiceFeatureTable table19_0 = new ServiceFeatureTable(SQLConstantes.servicio19_0);
         ServiceFeatureTable table19_1 = new ServiceFeatureTable(SQLConstantes.servicio19_1);
         ServiceFeatureTable table19_2 = new ServiceFeatureTable(SQLConstantes.servicio19_2);
         ServiceFeatureTable table19_3 = new ServiceFeatureTable(SQLConstantes.servicio19_3);
@@ -258,89 +215,236 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
         ServiceFeatureTable table19_13 = new ServiceFeatureTable(SQLConstantes.servicio19_13);
         ServiceFeatureTable table19_14 = new ServiceFeatureTable(SQLConstantes.servicio19_14);
         ServiceFeatureTable table19_15 = new ServiceFeatureTable(SQLConstantes.servicio19_15);
-        ServiceFeatureTable table19_16 = new ServiceFeatureTable(SQLConstantes.servicio19_16);
 
-        layerFromTable16_1 = new FeatureLayer(table16_1);
-        layerFromTable16_2 = new FeatureLayer(table16_2);
-        layerFromTable16_3 = new FeatureLayer(table16_3);
-        layerFromTable16_4 = new FeatureLayer(table16_4);
-        layerFromTable16_5 = new FeatureLayer(table16_5);
-        layerFromTable16_6 = new FeatureLayer(table16_6);
-        layerFromTable16_7 = new FeatureLayer(table16_7);
-        layerFromTable16_8 = new FeatureLayer(table16_8);
-        layerFromTable16_9 = new FeatureLayer(table16_9);
-        layerFromTable16_10 = new FeatureLayer(table16_10);
-        layerFromTable16_11 = new FeatureLayer(table16_11);
-        layerFromTable16_12 = new FeatureLayer(table16_12);
-        layerFromTable16_13 = new FeatureLayer(table16_13);
-        layerFromTable16_14 = new FeatureLayer(table16_14);
-        layerFromTable16_15 = new FeatureLayer(table16_15);
-        layerFromTable16_16 = new FeatureLayer(table16_16);
+        featureLayers16.add(new FeatureLayer(table16_0));
+        featureLayers16.add(new FeatureLayer(table16_1));
+        featureLayers16.add(new FeatureLayer(table16_2));
+        featureLayers16.add(new FeatureLayer(table16_3));
+        featureLayers16.add(new FeatureLayer(table16_4));
+        featureLayers16.add(new FeatureLayer(table16_5));
+        featureLayers16.add(new FeatureLayer(table16_6));
+        featureLayers16.add(new FeatureLayer(table16_7));
+        featureLayers16.add(new FeatureLayer(table16_8));
+        featureLayers16.add(new FeatureLayer(table16_9));
+        featureLayers16.add(new FeatureLayer(table16_10));
+        featureLayers16.add(new FeatureLayer(table16_11));
+        featureLayers16.add(new FeatureLayer(table16_12));
+        featureLayers16.add(new FeatureLayer(table16_13));
+        featureLayers16.add(new FeatureLayer(table16_14));
+        featureLayers16.add(new FeatureLayer(table16_15));
 
-        layerFromTable17_1 = new FeatureLayer(table17_1);
-        layerFromTable17_2 = new FeatureLayer(table17_2);
-        layerFromTable17_3 = new FeatureLayer(table17_3);
-        layerFromTable17_4 = new FeatureLayer(table17_4);
-        layerFromTable17_5 = new FeatureLayer(table17_5);
-        layerFromTable17_6 = new FeatureLayer(table17_6);
-        layerFromTable17_7 = new FeatureLayer(table17_7);
-        layerFromTable17_8 = new FeatureLayer(table17_8);
-        layerFromTable17_9 = new FeatureLayer(table17_9);
-        layerFromTable17_10 = new FeatureLayer(table17_10);
-        layerFromTable17_11 = new FeatureLayer(table17_11);
-        layerFromTable17_12 = new FeatureLayer(table17_12);
-        layerFromTable17_13 = new FeatureLayer(table17_13);
-        layerFromTable17_14 = new FeatureLayer(table17_14);
-        layerFromTable17_15 = new FeatureLayer(table17_15);
-        layerFromTable17_16 = new FeatureLayer(table17_16);
+        featureLayers17.add(new FeatureLayer(table17_0));
+        featureLayers17.add(new FeatureLayer(table17_1));
+        featureLayers17.add(new FeatureLayer(table17_2));
+        featureLayers17.add(new FeatureLayer(table17_3));
+        featureLayers17.add(new FeatureLayer(table17_4));
+        featureLayers17.add(new FeatureLayer(table17_5));
+        featureLayers17.add(new FeatureLayer(table17_6));
+        featureLayers17.add(new FeatureLayer(table17_7));
+        featureLayers17.add(new FeatureLayer(table17_8));
+        featureLayers17.add(new FeatureLayer(table17_9));
+        featureLayers17.add(new FeatureLayer(table17_10));
+        featureLayers17.add(new FeatureLayer(table17_11));
+        featureLayers17.add(new FeatureLayer(table17_12));
+        featureLayers17.add(new FeatureLayer(table17_13));
+        featureLayers17.add(new FeatureLayer(table17_14));
+        featureLayers17.add(new FeatureLayer(table17_15));
 
-        layerFromTable18_1 = new FeatureLayer(table18_1);
-        layerFromTable18_2 = new FeatureLayer(table18_2);
-        layerFromTable18_3 = new FeatureLayer(table18_3);
-        layerFromTable18_4 = new FeatureLayer(table18_4);
-        layerFromTable18_5 = new FeatureLayer(table18_5);
-        layerFromTable18_6 = new FeatureLayer(table18_6);
-        layerFromTable18_7 = new FeatureLayer(table18_7);
-        layerFromTable18_8 = new FeatureLayer(table18_8);
-        layerFromTable18_9 = new FeatureLayer(table18_9);
-        layerFromTable18_10 = new FeatureLayer(table18_10);
-        layerFromTable18_11 = new FeatureLayer(table18_11);
-        layerFromTable18_12 = new FeatureLayer(table18_12);
-        layerFromTable18_13 = new FeatureLayer(table18_13);
-        layerFromTable18_14 = new FeatureLayer(table18_14);
-        layerFromTable18_15 = new FeatureLayer(table18_15);
-        layerFromTable18_16 = new FeatureLayer(table18_16);
+        featureLayers18.add(new FeatureLayer(table18_0));
+        featureLayers18.add(new FeatureLayer(table18_1));
+        featureLayers18.add(new FeatureLayer(table18_2));
+        featureLayers18.add(new FeatureLayer(table18_3));
+        featureLayers18.add(new FeatureLayer(table18_4));
+        featureLayers18.add(new FeatureLayer(table18_5));
+        featureLayers18.add(new FeatureLayer(table18_6));
+        featureLayers18.add(new FeatureLayer(table18_7));
+        featureLayers18.add(new FeatureLayer(table18_8));
+        featureLayers18.add(new FeatureLayer(table18_9));
+        featureLayers18.add(new FeatureLayer(table18_10));
+        featureLayers18.add(new FeatureLayer(table18_11));
+        featureLayers18.add(new FeatureLayer(table18_12));
+        featureLayers18.add(new FeatureLayer(table18_13));
+        featureLayers18.add(new FeatureLayer(table18_14));
+        featureLayers18.add(new FeatureLayer(table18_15));
 
-        layerFromTable19_1 = new FeatureLayer(table19_1);
-        layerFromTable19_2 = new FeatureLayer(table19_2);
-        layerFromTable19_3 = new FeatureLayer(table19_3);
-        layerFromTable19_4 = new FeatureLayer(table19_4);
-        layerFromTable19_5 = new FeatureLayer(table19_5);
-        layerFromTable19_6 = new FeatureLayer(table19_6);
-        layerFromTable19_7 = new FeatureLayer(table19_7);
-        layerFromTable19_8 = new FeatureLayer(table19_8);
-        layerFromTable19_9 = new FeatureLayer(table19_9);
-        layerFromTable19_10 = new FeatureLayer(table19_10);
-        layerFromTable19_11 = new FeatureLayer(table19_11);
-        layerFromTable19_12 = new FeatureLayer(table19_12);
-        layerFromTable19_13 = new FeatureLayer(table19_13);
-        layerFromTable19_14 = new FeatureLayer(table19_14);
-        layerFromTable19_15 = new FeatureLayer(table19_15);
-        layerFromTable19_16 = new FeatureLayer(table19_16);
+        featureLayers19.add(new FeatureLayer(table19_0));
+        featureLayers19.add(new FeatureLayer(table19_1));
+        featureLayers19.add(new FeatureLayer(table19_2));
+        featureLayers19.add(new FeatureLayer(table19_3));
+        featureLayers19.add(new FeatureLayer(table19_4));
+        featureLayers19.add(new FeatureLayer(table19_5));
+        featureLayers19.add(new FeatureLayer(table19_6));
+        featureLayers19.add(new FeatureLayer(table19_7));
+        featureLayers19.add(new FeatureLayer(table19_8));
+        featureLayers19.add(new FeatureLayer(table19_9));
+        featureLayers19.add(new FeatureLayer(table19_10));
+        featureLayers19.add(new FeatureLayer(table19_11));
+        featureLayers19.add(new FeatureLayer(table19_12));
+        featureLayers19.add(new FeatureLayer(table19_13));
+        featureLayers19.add(new FeatureLayer(table19_14));
+        featureLayers19.add(new FeatureLayer(table19_15));
 
         layerFromTableComisarias = new FeatureLayer(tableComisarias);
         layerFromTableResidencias = new FeatureLayer(tableResidencias);
 
+        btn_message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              openMensaje();
+            }
+        });
+        btn_gps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setupLocationCurrent();
+            }
+        });
+
+    }
+
+   /*METODOS UBICACION*/
+    private void setupLocationDisplay() {
+        mLocationDisplay = mapView.getLocationDisplay();
+        mLocationDisplay.addDataSourceStatusChangedListener(dataSourceStatusChangedEvent -> {
+            if (dataSourceStatusChangedEvent.isStarted() || dataSourceStatusChangedEvent.getError() == null) {
+                return;
+            }
+
+            int requestPermissionsCode = 2;
+            String[] requestPermissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+
+            if (!(ContextCompat.checkSelfPermission(MainActivity.this, requestPermissions[0]) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(MainActivity.this, requestPermissions[1]) == PackageManager.PERMISSION_GRANTED)) {
+                ActivityCompat.requestPermissions(MainActivity.this, requestPermissions, requestPermissionsCode);
+            } else {
+                String message = String.format("Error in DataSourceStatusChangedListener: %s",
+                        dataSourceStatusChangedEvent.getSource().getLocationDataSource().getError().getMessage());
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+            }
+        });
+        mLocationDisplay.setAutoPanMode(LocationDisplay.AutoPanMode.COMPASS_NAVIGATION);
+        mLocationDisplay.startAsync();
+    }
+
+    private void setupLocationCurrent() {
+        mLocationDisplay = mapView.getLocationDisplay();
+        mLocationDisplay.addDataSourceStatusChangedListener(dataSourceStatusChangedEvent -> {
+            if (dataSourceStatusChangedEvent.isStarted() || dataSourceStatusChangedEvent.getError() == null) {
+                return;
+            }
+
+            int requestPermissionsCode = 2;
+            String[] requestPermissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+
+            if (!(ContextCompat.checkSelfPermission(MainActivity.this, requestPermissions[0]) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(MainActivity.this, requestPermissions[1]) == PackageManager.PERMISSION_GRANTED)) {
+                ActivityCompat.requestPermissions(MainActivity.this, requestPermissions, requestPermissionsCode);
+            } else {
+                String message = String.format("Error in DataSourceStatusChangedListener: %s",
+                        dataSourceStatusChangedEvent.getSource().getLocationDataSource().getError().getMessage());
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+            }
+        });
+        mLocationDisplay.setAutoPanMode(LocationDisplay.AutoPanMode.NAVIGATION);
+        mLocationDisplay.startAsync();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            mLocationDisplay.startAsync();
+        } else {
+            Toast.makeText(MainActivity.this, getResources().getString(R.string.location_permission_denied), Toast.LENGTH_SHORT).show();
+        }
     }
 
+    /*METODOS DE BUSQUEDA DE DIRECCION*/
 
+//    private void queryLocator(final String query) {
+//        if (query != null && query.length() > 0) {
+//            mLocatorTask.cancelLoad();
+//            final ListenableFuture<List<GeocodeResult>> geocodeFuture = mLocatorTask.geocodeAsync(query, mGeocodeParameters);
+//            geocodeFuture.addDoneListener(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        List<GeocodeResult> geocodeResults = geocodeFuture.get();
+//                        if (geocodeResults.size() > 0) {
+//                            displaySearchResult(geocodeResults.get(0));
+//                        } else {
+//                            showError(getString(R.string.nothing_found) + " " + query);
+//                        }
+//                    } catch (InterruptedException | ExecutionException e) {
+//                        showError(e.getMessage());
+//                    }
+//                    geocodeFuture.removeDoneListener(this); // Done searching, remove the listener.
+//                }
+//            });
+//        }
+//    }
+
+//    private void displaySearchResult(GeocodeResult geocodedLocation) {
+//        String displayLabel = geocodedLocation.getLabel();
+//        TextSymbol textLabel = new TextSymbol(18, displayLabel, Color.rgb(192, 32, 32), TextSymbol.HorizontalAlignment.CENTER, TextSymbol.VerticalAlignment.BOTTOM);
+//        Graphic textGraphic = new Graphic(geocodedLocation.getDisplayLocation(), textLabel);
+//        Graphic mapMarker = new Graphic(geocodedLocation.getDisplayLocation(), geocodedLocation.getAttributes(),
+//                new SimpleMarkerSymbol(SimpleMarkerSymbol.Style.SQUARE, Color.rgb(255, 0, 0), 12.0f));
+//        ListenableList allGraphics = mGraphicsOverlay.getGraphics();
+//        allGraphics.clear();
+//        allGraphics.add(mapMarker);
+//        allGraphics.add(textGraphic);
+//        mapView.setViewpointCenterAsync(geocodedLocation.getDisplayLocation());
+//    }
+//
+//    private void setupLocator() {
+//        String locatorService = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer";
+//        mLocatorTask = new LocatorTask(locatorService);
+//        mLocatorTask.addDoneLoadingListener(() -> {
+//            if (mLocatorTask.getLoadStatus() == LoadStatus.LOADED) {
+//                mGeocodeParameters = new GeocodeParameters();
+//                mGeocodeParameters.getResultAttributeNames().add("*");
+//                mGeocodeParameters.setMaxResults(1);
+//                mGraphicsOverlay = new GraphicsOverlay();
+//                mapView.getGraphicsOverlays().add(mGraphicsOverlay);
+//            } else if (mSearchView != null) {
+//                mSearchView.setEnabled(false);
+//            }
+//        });
+//        mLocatorTask.loadAsync();
+//    }
+//
+//    private void showError(String message) {
+//        Log.d("Search", message);
+//        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+//    }
+
+
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        super.onNewIntent(intent);
+//        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+//            queryLocator(intent.getStringExtra(SearchManager.QUERY));
+//        }
+//    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        MenuItem searchMenuItem = menu.findItem(R.id.action_buscar);
+        if (searchMenuItem != null) {
+            mSearchView = (SearchView) searchMenuItem.getActionView();
+            if (mSearchView != null) {
+                SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+                mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+                mSearchView.setIconifiedByDefault(false);
+            }
+        }
+        return true;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(actionBarDrawerToggle.onOptionsItemSelected(item)){
@@ -437,48 +541,16 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
                     case 3:
                         switch (childPosition) {
                             case 0:
-                                AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this,R.style.ThemeOverlay_MaterialComponents_Dialog);
-                                final View dialogView = MainActivity.this.getLayoutInflater().inflate(R.layout.layout_total_delitos_2016, null);
-
-                                alert.setTitle("Delitos Agrupados 2016");
-                                alert.setView(dialogView);
-                                alert.setNegativeButton("Salir",null);
-
-                                final AlertDialog alertDialog = alert.create();
-
-                                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                                    @Override
-                                    public void onShow(DialogInterface dialogInterface) {
-                                        Button b = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                                        b.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                alertDialog.dismiss();
-                                            }
-                                        });
-                                    }
-                                });
-                                alertDialog.show();
-                                Log.i("posicion","3-0");
+                                sendDelitoGrafico("2016");
                                 break;
                             case 1:
-                                FragmentMapa newFragment = new FragmentMapa();
-                                //newFragment.setArguments(args);
-                                FragmentManager fragmentManager = getSupportFragmentManager();
-                                fragmentManager.beginTransaction().replace(R.id.contedor_fragments,newFragment).commit();
-                                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
-                                drawer.closeDrawer(GravityCompat.START);
+                                sendDelitoGrafico("2017");
                                 break;
                             case 2:
-                                FragmentMapa2 newFragment2 = new FragmentMapa2();
-                                //newFragment.setArguments(args);
-                                FragmentManager fragmentManager2 = getSupportFragmentManager();
-                                fragmentManager2.beginTransaction().replace(R.id.contedor_fragments,newFragment2).commit();
-                                DrawerLayout drawer2 = (DrawerLayout) findViewById(R.id.drawer);
-                                drawer2.closeDrawer(GravityCompat.START);
+                                sendDelitoGrafico("2018");
                                 break;
                             case 3:
-                                Log.i("posicion","3-3");
+                                sendDelitoGrafico("2019");
 
                         }
                         break;
@@ -486,7 +558,6 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
 
                 if(groupPosition>=0 && childPosition>=0)
                 {
-
                     //FragmentMapa newFragment = new FragmentMapa();
                     //newFragment.setArguments(args);
                     //FragmentManager fragmentManager = getSupportFragmentManager();
@@ -522,7 +593,6 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
         grupo2.add(2,"2018");
         grupo2.add(3,"2019");
 
-
         List<String> grupo3 = new ArrayList<String>();
         grupo3.add(0,"Ver Puntos de Residencia");
 
@@ -546,12 +616,14 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
         if(estado==true)
         {
             //map.getOperationalLayers().clear();
-            map.getOperationalLayers().add(capa);}
+            if(!map.getOperationalLayers().contains(capa))
+            {map.getOperationalLayers().add(capa);}
+        }
         else
         { map.getOperationalLayers().remove(capa);}
     }
 
-    /*SETEAR ESTADOS AL ARRAYLIST*/
+    /*SETEAR ESTADOS A LOS ARRAYLIST AL INICIAR*/
     private void setCheckEstados(){
         if(estadosComisaria.size()==0){
             for(int i=0;i<1;i++)
@@ -562,15 +634,15 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
             {estadosResidencia.add(i,false);}
         }
         if(estados16.size()==0){
-            for(int i=0;i<17;i++)
+            for(int i=0;i<16;i++)
             {estados16.add(i,false);}
         }
         if(estados17.size()==0){
-            for(int i=0;i<17;i++)
+            for(int i=0;i<16;i++)
             {estados17.add(i,false);}
         }
         if(estados18.size()==0){
-            for(int i=0;i<17;i++)
+            for(int i=0;i<16;i++)
             {estados18.add(i,false);}
         }
         if(estados19.size()==0){
@@ -593,144 +665,33 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
     public void receiveDelito(ArrayList<Boolean> stateLayers,String anio) {
 
         if(anio=="2016"){
-        estados16.add(0,stateLayers.get(0));
-        estados16.add(1,stateLayers.get(1));
-        estados16.add(2,stateLayers.get(2));
-        estados16.add(3,stateLayers.get(3));
-        estados16.add(4,stateLayers.get(4));
-        estados16.add(5,stateLayers.get(5));
-        estados16.add(6,stateLayers.get(6));
-        estados16.add(7,stateLayers.get(7));
-        estados16.add(8,stateLayers.get(8));
-        estados16.add(9,stateLayers.get(9));
-        estados16.add(10,stateLayers.get(10));
-        estados16.add(11,stateLayers.get(11));
-        estados16.add(12,stateLayers.get(12));
-        estados16.add(13,stateLayers.get(13));
-        estados16.add(14,stateLayers.get(14));
-        estados16.add(15,stateLayers.get(15));
-        estados16.add(16,stateLayers.get(16));
-        addLayers(estados16.get(1),layerFromTable16_1);
-        addLayers(estados16.get(2),layerFromTable16_2);
-        addLayers(estados16.get(3),layerFromTable16_3);
-        addLayers(estados16.get(4),layerFromTable16_4);
-        addLayers(estados16.get(5),layerFromTable16_5);
-        addLayers(estados16.get(6),layerFromTable16_6);
-        addLayers(estados16.get(7),layerFromTable16_7);
-        addLayers(estados16.get(8),layerFromTable16_8);
-        addLayers(estados16.get(9),layerFromTable16_9);
-        addLayers(estados16.get(10),layerFromTable16_10);
-        addLayers(estados16.get(11),layerFromTable16_11);
-        addLayers(estados16.get(12),layerFromTable16_12);
-        addLayers(estados16.get(13),layerFromTable16_13);
-        addLayers(estados16.get(14),layerFromTable16_14);
-        addLayers(estados16.get(15),layerFromTable16_15);
-        addLayers(estados16.get(16),layerFromTable16_16);}
+            for(int i=0;i<16;i++){
+                //Log.i("estado"+i,""+estados16.get(i)+"-"+stateLayers.get(i));
+                estados16.add(i, stateLayers.get(i));
+                addLayers(estados16.get(i), featureLayers16.get(i));
+            }
+        }
         else
         if(anio=="2017"){
-        estados17.add(0,stateLayers.get(0));
-        estados17.add(1,stateLayers.get(1));
-        estados17.add(2,stateLayers.get(2));
-        estados17.add(3,stateLayers.get(3));
-        estados17.add(4,stateLayers.get(4));
-        estados17.add(5,stateLayers.get(5));
-        estados17.add(6,stateLayers.get(6));
-        estados17.add(7,stateLayers.get(7));
-        estados17.add(8,stateLayers.get(8));
-        estados17.add(9,stateLayers.get(9));
-        estados17.add(10,stateLayers.get(10));
-        estados17.add(11,stateLayers.get(11));
-        estados17.add(12,stateLayers.get(12));
-        estados17.add(13,stateLayers.get(13));
-        estados17.add(14,stateLayers.get(14));
-        estados17.add(15,stateLayers.get(15));
-        estados17.add(16,stateLayers.get(16));
-        addLayers(estados17.get(1),layerFromTable17_1);
-        addLayers(estados17.get(2),layerFromTable17_2);
-        addLayers(estados17.get(3),layerFromTable17_3);
-        addLayers(estados17.get(4),layerFromTable17_4);
-        addLayers(estados17.get(5),layerFromTable17_5);
-        addLayers(estados17.get(6),layerFromTable17_6);
-        addLayers(estados17.get(7),layerFromTable17_7);
-        addLayers(estados17.get(8),layerFromTable17_8);
-        addLayers(estados17.get(9),layerFromTable17_9);
-        addLayers(estados17.get(10),layerFromTable17_10);
-        addLayers(estados17.get(11),layerFromTable17_11);
-        addLayers(estados17.get(12),layerFromTable17_12);
-        addLayers(estados17.get(13),layerFromTable17_13);
-        addLayers(estados17.get(14),layerFromTable17_14);
-        addLayers(estados17.get(15),layerFromTable17_15);
-        addLayers(estados17.get(16),layerFromTable17_16);}
+            for(int i=0;i<16;i++){
+                estados17.add(i,stateLayers.get(i));
+                addLayers(estados17.get(i),featureLayers17.get(i));
+            }
+        }
         else
         if(anio=="2018"){
-        estados18.add(0,stateLayers.get(0));
-        estados18.add(1,stateLayers.get(1));
-        estados18.add(2,stateLayers.get(2));
-        estados18.add(3,stateLayers.get(3));
-        estados18.add(4,stateLayers.get(4));
-        estados18.add(5,stateLayers.get(5));
-        estados18.add(6,stateLayers.get(6));
-        estados18.add(7,stateLayers.get(7));
-        estados18.add(8,stateLayers.get(8));
-        estados18.add(9,stateLayers.get(9));
-        estados18.add(10,stateLayers.get(10));
-        estados18.add(11,stateLayers.get(11));
-        estados18.add(12,stateLayers.get(12));
-        estados18.add(13,stateLayers.get(13));
-        estados18.add(14,stateLayers.get(14));
-        estados18.add(15,stateLayers.get(15));
-        estados18.add(16,stateLayers.get(16));
-        addLayers(estados18.get(1),layerFromTable18_1);
-        addLayers(estados18.get(2),layerFromTable18_2);
-        addLayers(estados18.get(3),layerFromTable18_3);
-        addLayers(estados18.get(4),layerFromTable18_4);
-        addLayers(estados18.get(5),layerFromTable18_5);
-        addLayers(estados18.get(6),layerFromTable18_6);
-        addLayers(estados18.get(7),layerFromTable18_7);
-        addLayers(estados18.get(8),layerFromTable18_8);
-        addLayers(estados18.get(9),layerFromTable18_9);
-        addLayers(estados18.get(10),layerFromTable18_10);
-        addLayers(estados18.get(11),layerFromTable18_11);
-        addLayers(estados18.get(12),layerFromTable18_12);
-        addLayers(estados18.get(13),layerFromTable18_13);
-        addLayers(estados18.get(14),layerFromTable18_14);
-        addLayers(estados18.get(15),layerFromTable18_15);
-        addLayers(estados18.get(16),layerFromTable18_16);}
+            for(int i=0;i<16;i++){
+                estados18.add(i,stateLayers.get(i));
+                addLayers(estados18.get(i),featureLayers18.get(i));
+            }
+        }
         else
         if(anio=="2019"){
-        estados19.add(0,stateLayers.get(0));
-        estados19.add(1,stateLayers.get(1));
-        estados19.add(2,stateLayers.get(2));
-        estados19.add(3,stateLayers.get(3));
-        estados19.add(4,stateLayers.get(4));
-        estados19.add(5,stateLayers.get(5));
-        estados19.add(6,stateLayers.get(6));
-        estados19.add(7,stateLayers.get(7));
-        estados19.add(8,stateLayers.get(8));
-        estados19.add(9,stateLayers.get(9));
-        estados19.add(10,stateLayers.get(10));
-        estados19.add(11,stateLayers.get(11));
-        estados19.add(12,stateLayers.get(12));
-        estados19.add(13,stateLayers.get(13));
-        estados19.add(14,stateLayers.get(14));
-        estados19.add(15,stateLayers.get(15));
-        estados19.add(16,stateLayers.get(16));
-        addLayers(estados19.get(1),layerFromTable19_1);
-        addLayers(estados19.get(2),layerFromTable19_2);
-        addLayers(estados19.get(3),layerFromTable19_3);
-        addLayers(estados19.get(4),layerFromTable19_4);
-        addLayers(estados19.get(5),layerFromTable19_5);
-        addLayers(estados19.get(6),layerFromTable19_6);
-        addLayers(estados19.get(7),layerFromTable19_7);
-        addLayers(estados19.get(8),layerFromTable19_8);
-        addLayers(estados19.get(9),layerFromTable19_9);
-        addLayers(estados19.get(10),layerFromTable19_10);
-        addLayers(estados19.get(11),layerFromTable19_11);
-        addLayers(estados19.get(12),layerFromTable19_12);
-        addLayers(estados19.get(13),layerFromTable19_13);
-        addLayers(estados19.get(14),layerFromTable19_14);
-        addLayers(estados19.get(15),layerFromTable19_15);
-        addLayers(estados19.get(16),layerFromTable19_16);}
+            for(int i=0;i<16;i++){
+                estados19.add(i,stateLayers.get(i));
+                addLayers(estados19.get(i),featureLayers19.get(i));
+            }
+        }
     }
 
     //Metodo que recibe datos de DialogResidencias//
@@ -740,25 +701,41 @@ public class MainActivity extends AppCompatActivity implements DialogDelitos.Sen
         addLayers(estadosResidencia.get(0),layerFromTableResidencias);
     }
 
-    /*Metodo que envia datos DialogComisarias*/
+
+    //Metodo que envia datos DialogComisarias//
     public void sendComisaria(ArrayList<Boolean> estados) {
         DialogComisarias form = DialogComisarias.newInstance(estados);
         form.show(getSupportFragmentManager(), DialogComisarias.TAG);
 
     }
 
-    /*Metodo que envia datos DialogDelitos*/
+    //Metodo que envia datos DialogDelitos//
     public void sendDelito(String anio,ArrayList<Boolean> estados) {
         DialogDelitos form = DialogDelitos.newInstance(anio,estados);
         form.show(getSupportFragmentManager(), DialogDelitos.TAG);
     }
 
-    /*Metodo que envia datos DialogResidencias*/
+    //Metodo que envia datos DialogResidencias//
     public void sendResidencia(ArrayList<Boolean> estados) {
         DialogResidencias form = DialogResidencias.newInstance(estados);
         form.show(getSupportFragmentManager(), DialogResidencias.TAG);
 
     }
+
+    //Metodo que envia datos DialogDelitosGraficos//
+    public void sendDelitoGrafico(String anio) {
+        DialogDelitosGraficos form = DialogDelitosGraficos.newInstance(anio);
+        form.show(getSupportFragmentManager(), DialogDelitosGraficos.TAG);
+    }
+
+    //Metodo que envia datos DialogMensajes//
+    public void openMensaje() {
+        DialogMensajes form = new DialogMensajes();
+        form.show(getSupportFragmentManager(), DialogResidencias.TAG);
+
+    }
+
+
 
 
 }

@@ -36,6 +36,6 @@
                 android:layout_height="match_parent"
                 android:padding="2dp"
                 app:tint="@color/colorAccent"
-                android:src="@drawable/ic_3d_rotation"/>
+                android:src="@drawable/ic_action_pin"/>
         </LinearLayout>
 </LinearLayout>

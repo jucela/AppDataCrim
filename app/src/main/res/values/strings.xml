@@ -5,21 +5,26 @@
     <string name="close">Close</string>
     <string name="nav_header_desc">Navigation header</string>
 
-    <string name="check0">Mapa de Calor</string>
-    <string name="check1">Todos</string>
-    <string name="check2">Robo agravado</string>
-    <string name="check3">Robo agravado a mano armada</string>
-    <string name="check4">Robo</string>
-    <string name="check5">Hurto</string>
-    <string name="check6">Hurto agravado</string>
-    <string name="check7">Hurto de vehiculo</string>
-    <string name="check8">Asalto y robo de vehiculos</string>
-    <string name="check9">Homicidio calificado - Asesinato</string>
-    <string name="check10">Homicidio por arma de fuego</string>
-    <string name="check11">Hurto agravado en casa habitada</string>
-    <string name="check12">Robo frustrado</string>
-    <string name="check13">Robo agravado en lugar desolado</string>
-    <string name="check14">Microcomercializacion de drogas</string>
-    <string name="check15">Hurto frustrado</string>
-    <string name="check16">Estafa y otras defraudaciones</string>
+    <string name="check00">Mapa de Calor</string>
+    <string name="check0">Todos</string>
+    <string name="check1">Robo agravado</string>
+    <string name="check2">Robo agravado a mano armada</string>
+    <string name="check3">Robo</string>
+    <string name="check4">Hurto</string>
+    <string name="check5">Hurto agravado</string>
+    <string name="check6">Hurto de vehiculo</string>
+    <string name="check7">Asalto y robo de vehiculos</string>
+    <string name="check8">Homicidio calificado - Asesinato</string>
+    <string name="check9">Homicidio por arma de fuego</string>
+    <string name="check10">Hurto agravado en casa habitada</string>
+    <string name="check11">Robo frustrado</string>
+    <string name="check12">Robo agravado en lugar desolado</string>
+    <string name="check13">Microcomercializacion de drogas</string>
+    <string name="check14">Hurto frustrado</string>
+    <string name="check15">Estafa y otras defraudaciones</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="location_permission_denied">User denied permission for device location.</string>
+    <string name="nothing_found">Nothing found for </string>
+    <string name="search_hint">Find an address</string>
 </resources>
